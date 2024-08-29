@@ -1,21 +1,23 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Url } from "src/application/entities/Url";
-import { IShortUrlRepository } from "src/application/repositories/shortUrlRepository";
+import { AbstractShortUrlRepository } from "src/application/repositories/shortUrlRepository";
 import { UrlEntity } from "../entities/url";
 import { Repository } from "typeorm";
-import { urlEntityToRaw } from "../mappers/url";
+import { UrlEntityMapper } from "../mappers/url";
 
 @Injectable()
-export class UrlRepository implements IShortUrlRepository {
+export class UrlRepository implements AbstractShortUrlRepository {
     constructor(
         @InjectRepository(UrlEntity)
         private urlRepository: Repository<UrlEntity>,
     ) { }
 
 
-    async save(data: Url): Promise<void> {
-        this.urlRepository.save(data);
+    async save(url: Url): Promise<void> {
+        const urlEntity = UrlEntityMapper.toDatabase(url)
+
+        await this.urlRepository.save(urlEntity);
     }
 
     async findByUrlDestinyUrlAndUser({ destinyUrl, userId }: { destinyUrl: string; userId?: string; }): Promise<Url | null> {
@@ -23,7 +25,7 @@ export class UrlRepository implements IShortUrlRepository {
 
         if (!urlFound) return null;
 
-        return urlEntityToRaw(urlFound);
+        return UrlEntityMapper.toDomain(urlFound);
     }
 
     async findByUrlDestinyUrl({ destinyUrl }: { destinyUrl: string; }): Promise<Url | null> {
@@ -31,7 +33,7 @@ export class UrlRepository implements IShortUrlRepository {
 
         if (!urlFound) return null;
 
-        return urlEntityToRaw(urlFound);
+        return UrlEntityMapper.toDomain(urlFound);
     }
 
     async findByIdAndUserId({ id, userId }: { userId: string; id: string; }): Promise<Url | null> {
@@ -39,13 +41,13 @@ export class UrlRepository implements IShortUrlRepository {
 
         if (!urlFound) return null;
 
-        return urlEntityToRaw(urlFound);
+        return UrlEntityMapper.toDomain(urlFound);
     }
 
     async findManyByUserId(userId: string): Promise<Url[]> {
         const urlsFound = await this.urlRepository.find({ where: { userId } });
 
-        return urlsFound.map(urlEntityToRaw);
+        return urlsFound.map(UrlEntityMapper.toDomain);
     }
 
     async findByShortenedUrl(shortenedUrl: string): Promise<Url | null> {
@@ -53,6 +55,6 @@ export class UrlRepository implements IShortUrlRepository {
 
         if (!urlFound) return null;
 
-        return urlEntityToRaw(urlFound);
+        return UrlEntityMapper.toDomain(urlFound);
     }
 }
