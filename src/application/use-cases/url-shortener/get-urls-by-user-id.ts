@@ -1,5 +1,6 @@
-import { Url } from "../entities/Url";
-import { IShortUrlRepository } from "../repositories/shortUrlRepository";
+import { Url } from "src/application/entities/Url";
+import { IShortUrlRepository } from "src/application/repositories/shortUrlRepository";
+
 
 interface IGetUrlsByUserIdParams {
     userId: string;

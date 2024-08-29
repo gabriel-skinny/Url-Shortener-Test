@@ -1,6 +1,7 @@
 import { NotFoundError } from "src/application/errors/notFound";
-import { Url } from "../entities/Url";
-import { IShortUrlRepository } from "../repositories/shortUrlRepository";
+
+import { Url } from "src/application/entities/Url";
+import { IShortUrlRepository } from "src/application/repositories/shortUrlRepository";
 import { IUserExistsByIdUseCase } from "../user/exists-by-id";
 
 interface ICreateShortUrlParams {
@@ -19,7 +20,7 @@ export class CreateShortUrlUseCase {
     ) { }
 
     async execute({ userId, destinyUrl }: ICreateShortUrlParams): Promise<ICreateShortUrlReturn> {
-        if (!await this.userExistsByIdUseCase.execute(userId)) throw new NotFoundError("User not found");
+        if (userId && !await this.userExistsByIdUseCase.execute(userId)) throw new NotFoundError("User not found");
 
         const urlSaved = await this.shortUrlRepository.findByUrlDesitinyAndUser({ destinyUrl, userId })
 

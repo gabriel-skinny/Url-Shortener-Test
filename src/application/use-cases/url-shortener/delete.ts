@@ -1,5 +1,6 @@
-import { NotFoundError } from "../errors/notFound";
-import { IShortUrlRepository } from "../repositories/shortUrlRepository";
+import { NotFoundError } from "rxjs";
+import { IShortUrlRepository } from "src/application/repositories/shortUrlRepository";
+
 
 interface IDeleteUrlUseCaseParams {
     urlId: string;
