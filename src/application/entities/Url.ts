@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { generateRandomString } from "../helpers/generateRandomString";
 
 export interface IUrlProps {
     id?: string;
@@ -30,10 +31,11 @@ export class Url {
         this.updatedAt = props.updatedAt;
 
         this.makeShortenedUrl();
+        console.log({ shorted: this._shortenedUrl })
     }
 
     public makeShortenedUrl() {
-        this._shortenedUrl = `${process.env.HOST_URL}`
+        this._shortenedUrl = `${process.env.HOST_URL}/${generateRandomString(6)}`
     }
 
     public click() {
