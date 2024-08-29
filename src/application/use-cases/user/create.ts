@@ -23,6 +23,7 @@ export class CreateUserUseCase {
       name: data.name,
       password: data.password,
     });
+    user.password_hash.hashPassword();
 
     await this.userRepository.save(user);
   }

@@ -3,6 +3,7 @@ import { NotFoundError } from 'src/application/errors/notFound';
 import { Url } from 'src/application/entities/Url';
 import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
 import { AbstractUserExistsByIdUseCase } from '../user/exists-by-id';
+import { Injectable } from '@nestjs/common';
 
 interface ICreateShortUrlParams {
   userId?: string;
@@ -13,6 +14,7 @@ interface ICreateShortUrlReturn {
   shortednedUrl: string;
 }
 
+@Injectable()
 export class CreateShortUrlUseCase {
   constructor(
     private shortUrlRepository: AbstractShortUrlRepository,
@@ -33,9 +35,11 @@ export class CreateShortUrlUseCase {
         userId,
       });
     } else {
-      urlSaved = await this.shortUrlRepository.findByUrlDestinyUrl({
-        destinyUrl,
-      });
+      urlSaved = await this.shortUrlRepository.findByUrlDestinyUrlAndUserIsNull(
+        {
+          destinyUrl,
+        },
+      );
     }
 
     if (urlSaved) return { shortednedUrl: urlSaved.shortenedUrl };

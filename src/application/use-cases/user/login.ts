@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AbstractUserRepository } from '../../repositories/userRepository';
 import { NotFoundError } from '../../errors/notFound';
 import { WrongValueError } from '../../errors/wrongValue';
-import { IJwtService } from '../../services/jwt';
+import { AbstractAuthService } from '../../services/jwt';
 
 interface ILoginUseCaseParams {
   email: string;
@@ -17,7 +17,7 @@ interface ILoginUseCaseReturn {
 export class LoginUseCase {
   constructor(
     private userRepository: AbstractUserRepository,
-    private jwtService: IJwtService,
+    private authService: AbstractAuthService,
   ) {}
 
   async execute({
@@ -31,8 +31,8 @@ export class LoginUseCase {
     if (!user.password_hash.isTheSameValue(password))
       throw new WrongValueError('Password does not match');
 
-    const { token } = await this.jwtService.generateToken({
-      id: user.id,
+    const { token } = await this.authService.generateLoginToken({
+      userId: user.id,
       name: user.name,
       email: user.email,
     });
