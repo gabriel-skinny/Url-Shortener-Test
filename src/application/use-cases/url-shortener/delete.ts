@@ -1,4 +1,4 @@
-import { NotFoundError } from "rxjs";
+import { NotFoundError } from "src/application/errors/notFound";
 import { IShortUrlRepository } from "src/application/repositories/shortUrlRepository";
 
 
