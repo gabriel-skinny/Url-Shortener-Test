@@ -44,7 +44,7 @@ describe("Login user use case", () => {
         expect(loginUseCasePromise).rejects.toStrictEqual(new NotFoundError("User not found with that email"));
     });
 
-    it("Should throw an error with user tries to login with the wrong password", async () => {
+    it("Should throw an error if a user tries to login with the wrong password", async () => {
         const { userRepository, loginUseCase } = makeSut();
 
         const plainPassword = "plainPassword"
