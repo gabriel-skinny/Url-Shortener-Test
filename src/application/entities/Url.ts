@@ -31,7 +31,6 @@ export class Url {
         this.updatedAt = props.updatedAt;
 
         this.makeShortenedUrl();
-        console.log({ shorted: this._shortenedUrl })
     }
 
     public makeShortenedUrl() {
