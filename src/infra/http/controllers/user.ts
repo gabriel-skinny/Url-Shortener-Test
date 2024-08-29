@@ -27,7 +27,7 @@ export class UserController {
     };
   }
 
-  @Post()
+  @Post('/login')
   async login(
     @Body() { email, password }: LoginDTO,
   ): Promise<BaseControllerReturn<{ token: string }>> {

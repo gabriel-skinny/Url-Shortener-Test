@@ -1,7 +1,11 @@
-import { IsString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsUUID, IsUrl } from 'class-validator';
 
 export class CreateUrlDTO {
-  @IsString()
+  @IsUrl({
+    protocols: ['http', 'https'],
+    allow_protocol_relative_urls: false,
+    require_protocol: true,
+  })
   @IsNotEmpty()
   destinyUrl: string;
 
@@ -14,22 +18,14 @@ export class DeleteUrlDTO {
   @IsUUID()
   @IsNotEmpty()
   urlId: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  userId: string;
 }
 
 export class UpdateUrlDTO {
-  @IsString()
+  @IsUrl({
+    protocols: ['http', 'https'],
+    allow_protocol_relative_urls: false,
+    require_protocol: true,
+  })
   @IsNotEmpty()
   newDestinyUrl: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  urlId: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  userId: string;
 }

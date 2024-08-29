@@ -5,9 +5,12 @@ import {
   Get,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateShortUrlUseCase } from 'src/application/use-cases/url-shortener/create';
@@ -16,10 +19,13 @@ import { GetUrlsByUserIdUseCase } from 'src/application/use-cases/url-shortener/
 import { RedirectUseCase } from 'src/application/use-cases/url-shortener/redirect';
 import { UpdateUrlUseCase } from 'src/application/use-cases/url-shortener/update';
 import { BaseControllerReturn } from 'src/infra/interfaces/baseController';
-import { CreateUrlDTO, DeleteUrlDTO, UpdateUrlDTO } from '../dto/url';
+import { ILoginTokenData } from 'src/infra/services/Auth';
+import { ConditionalGuardByField } from '../decoretors/conditionalGuard';
+import { CreateUrlDTO, UpdateUrlDTO } from '../dto/url';
+import { AuthGuard } from '../guards/Autentication';
 import { IUrlViewModel, UrlViewModel } from '../view-models/url';
 
-@Controller('url')
+@Controller()
 export class UrlController {
   constructor(
     private readonly createUrlUseCase: CreateShortUrlUseCase,
@@ -29,7 +35,9 @@ export class UrlController {
     private readonly updateUseCase: UpdateUrlUseCase,
   ) {}
 
-  @Post()
+  @Post('url')
+  @ConditionalGuardByField('userId')
+  @UseGuards(AuthGuard)
   async create(
     @Body() { destinyUrl, userId }: CreateUrlDTO,
   ): Promise<BaseControllerReturn<{ shortednedUrl: string }>> {
@@ -45,35 +53,42 @@ export class UrlController {
     };
   }
 
-  @Post(':urlValue')
+  @Get(':urlValue')
   async redirect(@Param('urlValue') urlValue: string, @Res() res: Response) {
     const { desitinyUrl } = await this.redirectUseCase.execute({
-      shortenedUrl: urlValue,
+      shortenedUrlValue: urlValue,
     });
 
     res.redirect(desitinyUrl);
   }
 
-  @Delete()
-  async delete(
-    @Body() { urlId, userId }: DeleteUrlDTO,
-  ): Promise<BaseControllerReturn> {
-    await this.deleteUrlUseCase.execute({ urlId, userId });
+  @UseGuards(AuthGuard)
+  @Get('url/many')
+  async getUrlsByUserId(
+    @Req() { user }: { user: ILoginTokenData },
+  ): Promise<BaseControllerReturn<{ urls: IUrlViewModel[] }>> {
+    const urls = await this.getUrlsByUserIdUseCase.execute({
+      userId: user.userId,
+    });
 
     return {
+      message: 'User urls',
       statusCode: HttpStatus.OK,
-      message: 'Url deleted sucessfully',
+      data: { urls: urls.map(UrlViewModel.toHttp) },
     };
   }
 
-  @Patch()
+  @UseGuards(AuthGuard)
+  @Patch('url/:id')
   async update(
-    @Body() { newDestinyUrl, urlId, userId }: UpdateUrlDTO,
+    @Req() { user }: { user: ILoginTokenData },
+    @Body() { newDestinyUrl }: UpdateUrlDTO,
+    @Param('id', ParseUUIDPipe) urlId: string,
   ): Promise<BaseControllerReturn> {
     await this.updateUseCase.execute({
       newDestinyUrl,
       urlId,
-      userId,
+      userId: user.userId,
     });
 
     return {
@@ -82,16 +97,17 @@ export class UrlController {
     };
   }
 
-  @Get('many/:id')
-  async getUrlsByUserId(
-    @Param('id') id: string,
-  ): Promise<BaseControllerReturn<{ urls: IUrlViewModel[] }>> {
-    const urls = await this.getUrlsByUserIdUseCase.execute({ userId: id });
+  @UseGuards(AuthGuard)
+  @Delete('url/:id')
+  async delete(
+    @Param('id', ParseUUIDPipe) urlId: string,
+    @Req() { user }: { user: ILoginTokenData },
+  ): Promise<BaseControllerReturn> {
+    await this.deleteUrlUseCase.execute({ userId: user.userId, urlId });
 
     return {
-      message: 'User urls',
       statusCode: HttpStatus.OK,
-      data: { urls: urls.map(UrlViewModel.toHttp) },
+      message: 'Url deleted sucessfully',
     };
   }
 }
