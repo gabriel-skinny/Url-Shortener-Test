@@ -7,11 +7,15 @@ export class Password {
 
   constructor(value: string) {
     this.cryptoAdapter = new CryptoAdapter();
-    this._password = this.cryptoAdapter.hash(value, PASSWORD_SALT);
+    this._password = value;
   }
 
   get value() {
     return this._password;
+  }
+
+  public hashPassword() {
+    this._password = this.cryptoAdapter.hash(this._password, PASSWORD_SALT);
   }
 
   public isTheSameValue(plainValue: string) {

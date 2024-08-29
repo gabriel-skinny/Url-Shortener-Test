@@ -6,6 +6,7 @@ export interface IUrlProps {
   destinyUrl: string;
   userId?: string;
   clickNumber?: number;
+  shortenedUrl?: string;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
@@ -25,16 +26,15 @@ export class Url {
     this.id = props.id || randomUUID();
     this.destinyUrl = props.destinyUrl;
     this.userId = props.userId;
+    this._shortenedUrl = props.shortenedUrl || this.makeShortenedUrl();
     this._clickNumber = props.clickNumber || 0;
     this.createdAt = props.createdAt || new Date();
     this.deletedAt = props.deletedAt;
     this.updatedAt = props.updatedAt;
-
-    this.makeShortenedUrl();
   }
 
-  public makeShortenedUrl() {
-    this._shortenedUrl = `${process.env.HOST_URL}/${generateRandomString(6)}`;
+  private makeShortenedUrl() {
+    return `${process.env.HOST_URL}/${generateRandomString(6)}`;
   }
 
   public click() {

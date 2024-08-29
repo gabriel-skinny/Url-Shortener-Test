@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { Password } from './Password';
 
 export interface IUserProps {
@@ -20,7 +21,7 @@ export class User {
   public deletedAt?: Date;
 
   constructor(props: IUserProps) {
-    this.id = props.id;
+    this.id = props.id || randomUUID();
     this.name = props.name;
     this.email = props.email;
     this.password_hash = new Password(props.password);
