@@ -1,55 +1,55 @@
-import { randomUUID } from "crypto";
-import { generateRandomString } from "../helpers/generateRandomString";
+import { randomUUID } from 'crypto';
+import { generateRandomString } from '../helpers/generateRandomString';
 
 export interface IUrlProps {
-    id?: string;
-    destinyUrl: string;
-    userId?: string;
-    clickNumber?: number;
-    createdAt?: Date;
-    updatedAt?: Date;
-    deletedAt?: Date;
+  id?: string;
+  destinyUrl: string;
+  userId?: string;
+  clickNumber?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }
 
 export class Url {
-    readonly id: string;
-    readonly userId?: string;
-    public destinyUrl: string;
-    private _clickNumber: number;
-    private _shortenedUrl: string;
-    readonly createdAt: Date;
-    public updatedAt?: Date;
-    public deletedAt?: Date;
+  readonly id: string;
+  readonly userId?: string;
+  public destinyUrl: string;
+  private _clickNumber: number;
+  private _shortenedUrl: string;
+  readonly createdAt: Date;
+  public updatedAt?: Date;
+  public deletedAt?: Date;
 
-    constructor(props: IUrlProps) {
-        this.id = props.id || randomUUID();
-        this.destinyUrl = props.destinyUrl;
-        this.userId = props.userId;
-        this._clickNumber = props.clickNumber || 0;
-        this.createdAt = props.createdAt || new Date();
-        this.deletedAt = props.deletedAt;
-        this.updatedAt = props.updatedAt;
+  constructor(props: IUrlProps) {
+    this.id = props.id || randomUUID();
+    this.destinyUrl = props.destinyUrl;
+    this.userId = props.userId;
+    this._clickNumber = props.clickNumber || 0;
+    this.createdAt = props.createdAt || new Date();
+    this.deletedAt = props.deletedAt;
+    this.updatedAt = props.updatedAt;
 
-        this.makeShortenedUrl();
-    }
+    this.makeShortenedUrl();
+  }
 
-    public makeShortenedUrl() {
-        this._shortenedUrl = `${process.env.HOST_URL}/${generateRandomString(6)}`
-    }
+  public makeShortenedUrl() {
+    this._shortenedUrl = `${process.env.HOST_URL}/${generateRandomString(6)}`;
+  }
 
-    public click() {
-        this._clickNumber++;
-    }
+  public click() {
+    this._clickNumber++;
+  }
 
-    public delete() {
-        this.deletedAt = new Date();
-    }
+  public delete() {
+    this.deletedAt = new Date();
+  }
 
-    get clickNumber() {
-        return this._clickNumber;
-    }
+  get clickNumber() {
+    return this._clickNumber;
+  }
 
-    get shortenedUrl() {
-        return this._shortenedUrl;
-    }
-} 
+  get shortenedUrl() {
+    return this._shortenedUrl;
+  }
+}

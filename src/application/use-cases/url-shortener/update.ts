@@ -1,26 +1,29 @@
-import { NotFoundError } from "src/application/errors/notFound";
-import { AbstractShortUrlRepository } from "src/application/repositories/shortUrlRepository";
-
+import { NotFoundError } from 'src/application/errors/notFound';
+import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
 
 interface IUpdateUrlUseCaseParams {
-    urlId: string;
-    userId: string;
-    newDestinyUrl: string;
+  urlId: string;
+  userId: string;
+  newDestinyUrl: string;
 }
 
-
 export class UpdateUrlUseCase {
-    constructor(
-        private readonly urlRepository: AbstractShortUrlRepository
-    ) { }
+  constructor(private readonly urlRepository: AbstractShortUrlRepository) {}
 
-    async execute({ userId, urlId, newDestinyUrl }: IUpdateUrlUseCaseParams): Promise<void> {
-        const urlToUpdate = await this.urlRepository.findByIdAndUserId({ id: urlId, userId })
+  async execute({
+    userId,
+    urlId,
+    newDestinyUrl,
+  }: IUpdateUrlUseCaseParams): Promise<void> {
+    const urlToUpdate = await this.urlRepository.findByIdAndUserId({
+      id: urlId,
+      userId,
+    });
 
-        if (!urlToUpdate) throw new NotFoundError("Url to update not found");
+    if (!urlToUpdate) throw new NotFoundError('Url to update not found');
 
-        urlToUpdate.destinyUrl = newDestinyUrl;
+    urlToUpdate.destinyUrl = newDestinyUrl;
 
-        await this.urlRepository.save(urlToUpdate);
-    }
+    await this.urlRepository.save(urlToUpdate);
+  }
 }

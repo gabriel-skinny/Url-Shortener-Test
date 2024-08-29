@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-
 @Module({
-  imports: [
-
-  ],
+  imports: [],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

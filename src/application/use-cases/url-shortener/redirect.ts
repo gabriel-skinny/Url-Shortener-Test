@@ -1,22 +1,24 @@
-import { NotFoundError } from "../../errors/notFound";
-import { AbstractShortUrlRepository } from "../../repositories/shortUrlRepository";
+import { NotFoundError } from '../../errors/notFound';
+import { AbstractShortUrlRepository } from '../../repositories/shortUrlRepository';
 
 interface IRedirectUseCaseParams {
-    shortenedUrl: string;
+  shortenedUrl: string;
 }
 
 interface IRedirectUseCaseReturn {
-    desitinyUrl: string;
+  desitinyUrl: string;
 }
 
 export class RedirectUseCase {
-    constructor(private shortUrlRepository: AbstractShortUrlRepository) { }
+  constructor(private shortUrlRepository: AbstractShortUrlRepository) {}
 
-    async execute({ shortenedUrl }: IRedirectUseCaseParams): Promise<IRedirectUseCaseReturn> {
-        const url = await this.shortUrlRepository.findByShortenedUrl(shortenedUrl);
+  async execute({
+    shortenedUrl,
+  }: IRedirectUseCaseParams): Promise<IRedirectUseCaseReturn> {
+    const url = await this.shortUrlRepository.findByShortenedUrl(shortenedUrl);
 
-        if (!url) throw new NotFoundError("Shortened url not found with that name");
+    if (!url) throw new NotFoundError('Shortened url not found with that name');
 
-        return { desitinyUrl: url.destinyUrl };
-    }
+    return { desitinyUrl: url.destinyUrl };
+  }
 }

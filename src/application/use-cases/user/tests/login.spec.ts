@@ -1,58 +1,61 @@
-import { NotFoundError } from "src/application/errors/notFound";
-import { WrongValueError } from "src/application/errors/wrongValue";
-import { JwtMock } from "src/application/services/jwtMock";
-import { InMemoryUserRepository } from "../../../repositories/inMemoryUserRepository";
-import { LoginUseCase } from "../login";
-import { makeUser } from "./factories/makeUser";
-
+import { NotFoundError } from 'src/application/errors/notFound';
+import { WrongValueError } from 'src/application/errors/wrongValue';
+import { JwtMock } from 'src/application/services/jwtMock';
+import { InMemoryUserRepository } from '../../../repositories/inMemoryUserRepository';
+import { LoginUseCase } from '../login';
+import { makeUser } from './factories/makeUser';
 
 const makeSut = () => {
-    const userRepository = new InMemoryUserRepository();
-    const jwtService = new JwtMock();
-    const loginUseCase = new LoginUseCase(userRepository, jwtService);
+  const userRepository = new InMemoryUserRepository();
+  const jwtService = new JwtMock();
+  const loginUseCase = new LoginUseCase(userRepository, jwtService);
 
-    return { userRepository, loginUseCase, jwtService }
-}
+  return { userRepository, loginUseCase, jwtService };
+};
 
-describe("Login user use case", () => {
-    it("A user should login with the rigth credentials", async () => {
-        const { userRepository, loginUseCase } = makeSut();
+describe('Login user use case', () => {
+  it('A user should login with the rigth credentials', async () => {
+    const { userRepository, loginUseCase } = makeSut();
 
-        const plainPassword = "plainPassword"
-        const userRegistred = makeUser({ password: plainPassword });
-        await userRepository.save(userRegistred);
+    const plainPassword = 'plainPassword';
+    const userRegistred = makeUser({ password: plainPassword });
+    await userRepository.save(userRegistred);
 
-        const response = await loginUseCase.execute({
-            email: userRegistred.email,
-            password: plainPassword
-        });
-
-        expect(response.token).toBeTruthy();
+    const response = await loginUseCase.execute({
+      email: userRegistred.email,
+      password: plainPassword,
     });
 
-    it("Should throw an NotFoundError if a user does not exists with that email", async () => {
-        const { loginUseCase } = makeSut();
+    expect(response.token).toBeTruthy();
+  });
 
-        const loginUseCasePromise = loginUseCase.execute({
-            email: "nonExistingEmail@gmail.com",
-            password: "password"
-        });
+  it('Should throw an NotFoundError if a user does not exists with that email', async () => {
+    const { loginUseCase } = makeSut();
 
-        expect(loginUseCasePromise).rejects.toStrictEqual(new NotFoundError("User not found with that email"));
+    const loginUseCasePromise = loginUseCase.execute({
+      email: 'nonExistingEmail@gmail.com',
+      password: 'password',
     });
 
-    it("Should throw an error if a user tries to login with the wrong password", async () => {
-        const { userRepository, loginUseCase } = makeSut();
+    expect(loginUseCasePromise).rejects.toStrictEqual(
+      new NotFoundError('User not found with that email'),
+    );
+  });
 
-        const plainPassword = "plainPassword"
-        const userRegistred = makeUser({ password: plainPassword });
-        await userRepository.save(userRegistred);
+  it('Should throw an error if a user tries to login with the wrong password', async () => {
+    const { userRepository, loginUseCase } = makeSut();
 
-        const loginUseCasePromise = loginUseCase.execute({
-            email: userRegistred.email,
-            password: "wrongPassword"
-        });
+    const plainPassword = 'plainPassword';
+    const userRegistred = makeUser({ password: plainPassword });
+    await userRepository.save(userRegistred);
 
-        expect(loginUseCasePromise).rejects.toStrictEqual(new WrongValueError("Password does not match"));
+    const loginUseCasePromise = loginUseCase.execute({
+      email: userRegistred.email,
+      password: 'wrongPassword',
     });
-})
+
+    expect(loginUseCasePromise).rejects.toStrictEqual(
+      new WrongValueError('Password does not match'),
+    );
+  });
+});
