@@ -8,7 +8,7 @@ interface IGetUrlsByUserIdParams {
 
 type IGetUrlsByUserIdReturn = Url[];
 
-export class GetUrlsByUserId {
+export class GetUrlsByUserIdUseCase {
     constructor(
         private readonly urlRepository: AbstractShortUrlRepository
     ) { }

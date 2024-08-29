@@ -5,7 +5,7 @@ import { AbstractShortUrlRepository } from "src/application/repositories/shortUr
 interface IUpdateUrlUseCaseParams {
     urlId: string;
     userId: string;
-    newDesitinyUrl: string;
+    newDestinyUrl: string;
 }
 
 
@@ -14,12 +14,12 @@ export class UpdateUrlUseCase {
         private readonly urlRepository: AbstractShortUrlRepository
     ) { }
 
-    async execute({ userId, urlId, newDesitinyUrl }: IUpdateUrlUseCaseParams): Promise<void> {
+    async execute({ userId, urlId, newDestinyUrl }: IUpdateUrlUseCaseParams): Promise<void> {
         const urlToUpdate = await this.urlRepository.findByIdAndUserId({ id: urlId, userId })
 
         if (!urlToUpdate) throw new NotFoundError("Url to update not found");
 
-        urlToUpdate.destinyUrl = newDesitinyUrl;
+        urlToUpdate.destinyUrl = newDestinyUrl;
 
         await this.urlRepository.save(urlToUpdate);
     }
