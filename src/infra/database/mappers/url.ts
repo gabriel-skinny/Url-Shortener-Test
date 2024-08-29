@@ -7,6 +7,7 @@ export class UrlEntityMapper {
       id: url.id,
       destinyUrl: url.destinyUrl,
       userId: url.userId,
+      shortenedUrl: url.shortenedUrl,
       clickNumber: url.clickNumber,
       createdAt: url.createdAt,
       deletedAt: url.deletedAt,

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Url } from 'src/application/entities/Url';
 import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
 import { UrlEntity } from '../entities/url';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { UrlEntityMapper } from '../mappers/url';
 
 @Injectable()
@@ -35,13 +35,13 @@ export class UrlRepository implements AbstractShortUrlRepository {
     return UrlEntityMapper.toDomain(urlFound);
   }
 
-  async findByUrlDestinyUrl({
+  async findByUrlDestinyUrlAndUserIsNull({
     destinyUrl,
   }: {
     destinyUrl: string;
   }): Promise<Url | null> {
     const urlFound = await this.urlRepository.findOne({
-      where: { destinyUrl },
+      where: { destinyUrl, userId: IsNull() },
     });
 
     if (!urlFound) return null;

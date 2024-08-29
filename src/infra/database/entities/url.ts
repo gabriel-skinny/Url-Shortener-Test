@@ -2,38 +2,33 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserEntity } from './user';
 
 @Entity()
 export class UrlEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('string')
+  @Column()
   destinyUrl: string;
 
-  @Column('string')
+  @Column({ nullable: true })
   userId?: string;
 
-  @OneToMany()
-  user?: UserEntity;
-
-  @Column('int')
+  @Column()
   clickNumber: number;
 
-  @Column('string')
+  @Column()
   shortenedUrl: string;
 
-  @Column('date')
+  @Column()
   createdAt: Date;
 
-  @UpdateDateColumn('date')
+  @UpdateDateColumn()
   updatedAt?: Date;
 
-  @DeleteDateColumn('date')
+  @DeleteDateColumn()
   deletedAt?: Date;
 }

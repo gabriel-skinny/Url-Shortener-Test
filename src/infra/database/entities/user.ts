@@ -8,24 +8,24 @@ import {
 
 @Entity()
 export class UserEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('string')
+  @Column()
   name: string;
 
-  @Column('string')
+  @Column()
   email: string;
 
-  @Column('string')
+  @Column()
   password_hash: string;
 
-  @Column('date')
+  @Column()
   createdAt: Date;
 
-  @UpdateDateColumn('date')
+  @UpdateDateColumn()
   updatedAt?: Date;
 
-  @DeleteDateColumn('date')
+  @DeleteDateColumn()
   deletedAt?: Date;
 }

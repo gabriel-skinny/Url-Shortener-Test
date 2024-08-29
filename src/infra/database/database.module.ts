@@ -6,6 +6,7 @@ import { UserRepository } from './repositories/userRepository';
 import { UrlRepository } from './repositories/urlRepository';
 import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
 import { AbstractUserRepository } from 'src/application/repositories/userRepository';
+import 'dotenv/config';
 
 @Module({
   imports: [
@@ -19,8 +20,18 @@ import { AbstractUserRepository } from 'src/application/repositories/userReposit
       entities: [UrlEntity, UserEntity],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([UrlEntity, UserEntity]),
   ],
-  providers: [UserRepository, UrlRepository],
+  providers: [
+    {
+      provide: AbstractUserRepository,
+      useClass: UserRepository,
+    },
+    {
+      provide: AbstractShortUrlRepository,
+      useClass: UrlRepository,
+    },
+  ],
   exports: [
     {
       provide: AbstractUserRepository,
