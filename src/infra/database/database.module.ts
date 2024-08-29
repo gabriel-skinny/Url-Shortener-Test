@@ -2,6 +2,10 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UrlEntity } from "./entities/url";
 import { UserEntity } from "./entities/user";
+import { UserRepository } from "./repositories/userRepository";
+import { UrlRepository } from "./repositories/urlRepository";
+import { AbstractShortUrlRepository } from "src/application/repositories/shortUrlRepository";
+import { AbstractUserRepository } from "src/application/repositories/userRepository";
 
 
 
@@ -17,6 +21,13 @@ import { UserEntity } from "./entities/user";
             entities: [UrlEntity, UserEntity],
             synchronize: true,
         }),
-    ]
+    ],
+    providers: [{
+        provide: AbstractUserRepository,
+        useClass: UserRepository
+    }, {
+        provide: AbstractShortUrlRepository,
+        useClass: UrlRepository
+    }]
 })
 export class DatabaseModule { }
