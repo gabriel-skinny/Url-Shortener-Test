@@ -1,8 +1,8 @@
 import { User } from "../entities/User";
 
-export interface IUserRepository {
-    save(user: User): Promise<void>;
-    existsByEmail(email: string): Promise<boolean>;
-    findByEmail(email: string): Promise<User | null>;
-    existsById(userId: string): Promise<boolean>;
+export abstract class AbstractUserRepository {
+    abstract save(user: User): Promise<void>;
+    abstract existsByEmail(email: string): Promise<boolean>;
+    abstract findByEmail(email: string): Promise<User | null>;
+    abstract existsById(userId: string): Promise<boolean>;
 }

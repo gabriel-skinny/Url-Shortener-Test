@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { IUserRepository } from "../../repositories/userRepository";
+import { AbstractUserRepository } from "../../repositories/userRepository";
 import { NotFoundError } from "../../errors/notFound";
 import { WrongValueError } from "../../errors/wrongValue";
 import { IJwtService } from "../../services/jwt";
@@ -15,7 +15,7 @@ interface ILoginUseCaseReturn {
 
 @Injectable()
 export class LoginUseCase {
-    constructor(private userRepository: IUserRepository, private jwtService: IJwtService) { }
+    constructor(private userRepository: AbstractUserRepository, private jwtService: IJwtService) { }
 
     async execute({ email, password }: ILoginUseCaseParams): Promise<ILoginUseCaseReturn> {
         const user = await this.userRepository.findByEmail(email);

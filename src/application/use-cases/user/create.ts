@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { User } from "src/application/entities/User";
 import { AlreadyCreatedError } from "src/application/errors/alreadyCreated";
-import { IUserRepository } from "src/application/repositories/userRepository";
+import { AbstractUserRepository } from "src/application/repositories/userRepository";
 
 
 interface ICreateUserUseCaseParams {
@@ -12,7 +12,7 @@ interface ICreateUserUseCaseParams {
 
 @Injectable()
 export class CreateUserUseCase {
-    constructor(private userRepository: IUserRepository) { }
+    constructor(private userRepository: AbstractUserRepository) { }
 
     async execute(data: ICreateUserUseCaseParams) {
         if (await this.userRepository.existsByEmail(data.email)) {

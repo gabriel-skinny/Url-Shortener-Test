@@ -1,5 +1,5 @@
 import { NotFoundError } from "../../errors/notFound";
-import { IShortUrlRepository } from "../../repositories/shortUrlRepository";
+import { AbstractShortUrlRepository } from "../../repositories/shortUrlRepository";
 
 interface IRedirectUseCaseParams {
     shortenedUrl: string;
@@ -10,7 +10,7 @@ interface IRedirectUseCaseReturn {
 }
 
 export class RedirectUseCase {
-    constructor(private shortUrlRepository: IShortUrlRepository) { }
+    constructor(private shortUrlRepository: AbstractShortUrlRepository) { }
 
     async execute({ shortenedUrl }: IRedirectUseCaseParams): Promise<IRedirectUseCaseReturn> {
         const url = await this.shortUrlRepository.findByShortenedUrl(shortenedUrl);

@@ -1,5 +1,5 @@
 import { NotFoundError } from "src/application/errors/notFound";
-import { IShortUrlRepository } from "src/application/repositories/shortUrlRepository";
+import { AbstractShortUrlRepository } from "src/application/repositories/shortUrlRepository";
 
 
 interface IUpdateUrlUseCaseParams {
@@ -11,7 +11,7 @@ interface IUpdateUrlUseCaseParams {
 
 export class UpdateUrlUseCase {
     constructor(
-        private readonly urlRepository: IShortUrlRepository
+        private readonly urlRepository: AbstractShortUrlRepository
     ) { }
 
     async execute({ userId, urlId, newDesitinyUrl }: IUpdateUrlUseCaseParams): Promise<void> {

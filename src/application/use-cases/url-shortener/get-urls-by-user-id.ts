@@ -1,5 +1,5 @@
 import { Url } from "src/application/entities/Url";
-import { IShortUrlRepository } from "src/application/repositories/shortUrlRepository";
+import { AbstractShortUrlRepository } from "src/application/repositories/shortUrlRepository";
 
 
 interface IGetUrlsByUserIdParams {
@@ -10,7 +10,7 @@ type IGetUrlsByUserIdReturn = Url[];
 
 export class GetUrlsByUserId {
     constructor(
-        private readonly urlRepository: IShortUrlRepository
+        private readonly urlRepository: AbstractShortUrlRepository
     ) { }
 
     async execute({ userId }: IGetUrlsByUserIdParams): Promise<IGetUrlsByUserIdReturn> {

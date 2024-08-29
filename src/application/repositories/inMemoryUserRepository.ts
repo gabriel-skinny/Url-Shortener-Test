@@ -1,7 +1,7 @@
 import { User } from "../entities/User";
-import { IUserRepository } from "./userRepository";
+import { AbstractUserRepository } from "./userRepository";
 
-export class InMemoryUserRepository implements IUserRepository {
+export class InMemoryUserRepository implements AbstractUserRepository {
     public userDatabase: User[] = [];
 
     async save(user: User): Promise<void> {

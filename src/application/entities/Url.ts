@@ -14,12 +14,12 @@ export interface IUrlProps {
 export class Url {
     readonly id: string;
     readonly userId?: string;
-    readonly createdAt: Date;
-    public updatedAt?: Date;
     public destinyUrl: string;
-    public deletedAt?: Date;
     private _clickNumber: number;
     private _shortenedUrl: string;
+    readonly createdAt: Date;
+    public updatedAt?: Date;
+    public deletedAt?: Date;
 
     constructor(props: IUrlProps) {
         this.id = props.id || randomUUID();
@@ -39,7 +39,6 @@ export class Url {
 
     public click() {
         this._clickNumber++;
-        this.updatedAt = new Date();
     }
 
     public delete() {
