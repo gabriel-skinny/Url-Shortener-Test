@@ -8,7 +8,6 @@ import { AbstractShortUrlRepository } from "src/application/repositories/shortUr
 import { AbstractUserRepository } from "src/application/repositories/userRepository";
 
 
-
 @Module({
     imports: [
         TypeOrmModule.forRoot({
@@ -22,7 +21,8 @@ import { AbstractUserRepository } from "src/application/repositories/userReposit
             synchronize: true,
         }),
     ],
-    providers: [{
+    providers: [UserRepository, UrlRepository],
+    exports: [{
         provide: AbstractUserRepository,
         useClass: UserRepository
     }, {
