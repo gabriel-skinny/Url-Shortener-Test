@@ -17,4 +17,7 @@ export class InMemoryUserRepository implements IUserRepository {
         return this.userDatabase.find(user => user.email == email);
     }
 
+    async existsById(userId: string): Promise<boolean> {
+        return !!this.userDatabase.find(user => user.id == userId);
+    }
 }

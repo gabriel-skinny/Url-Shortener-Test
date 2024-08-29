@@ -2,6 +2,7 @@ import { Url } from "../entities/Url";
 import { IShortUrlRepository } from "./shortUrlRepository";
 
 export class InMemoryShortUrlRepository implements IShortUrlRepository {
+
     public shortUrlDatabase: Url[] = [];
 
     async save(data: Url): Promise<void> {
@@ -18,6 +19,10 @@ export class InMemoryShortUrlRepository implements IShortUrlRepository {
 
     async findManyByUserId(userId: string): Promise<Url[]> {
         return this.shortUrlDatabase.filter(url => url.userId == userId);
+    }
+
+    async findByShortenedUrl(shortenedUrl: string): Promise<Url | null> {
+        return this.shortUrlDatabase.find(url => url.shortenedUrl == shortenedUrl);
     }
 
 } 
