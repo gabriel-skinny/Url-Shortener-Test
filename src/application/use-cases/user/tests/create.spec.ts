@@ -1,7 +1,8 @@
-import { InMemoryUserRepository } from "../../../application/repositories/inMemoryUserRepository";
-import { CreateUserUseCase } from "../create-user"
+import { InMemoryUserRepository } from "../../../repositories/inMemoryUserRepository";
+
 import { makeUser } from "./factories/makeUser";
-import { AlreadyCreatedError } from "../../../application/errors/alreadyCreated";
+import { AlreadyCreatedError } from "../../../errors/alreadyCreated";
+import { CreateUserUseCase } from "../create";
 
 
 const makeSut = () => {

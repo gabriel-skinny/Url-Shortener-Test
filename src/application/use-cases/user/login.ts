@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { IUserRepository } from "../repositories/userRepository";
-import { NotFoundError } from "../errors/notFound";
-import { WrongValueError } from "../errors/wrongValue";
-import { IJwtService } from "../services/jwt";
+import { IUserRepository } from "../../repositories/userRepository";
+import { NotFoundError } from "../../errors/notFound";
+import { WrongValueError } from "../../errors/wrongValue";
+import { IJwtService } from "../../services/jwt";
 
 interface ILoginUseCaseParams {
     email: string;

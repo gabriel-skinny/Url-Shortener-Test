@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { IUserRepository } from "../repositories/userRepository";
-import { User } from "../entities/User";
-import { AlreadyCreatedError } from "../errors/alreadyCreated";
+import { User } from "src/application/entities/User";
+import { AlreadyCreatedError } from "src/application/errors/alreadyCreated";
+import { IUserRepository } from "src/application/repositories/userRepository";
+
 
 interface ICreateUserUseCaseParams {
     name: string;

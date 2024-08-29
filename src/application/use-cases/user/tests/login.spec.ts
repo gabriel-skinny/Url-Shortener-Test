@@ -1,12 +1,9 @@
-import { InMemoryUserRepository } from "../../../application/repositories/inMemoryUserRepository";
-import { CreateUserUseCase } from "../create-user"
-import { makeUser } from "./factories/makeUser";
-import { AlreadyCreatedError } from "../../../application/errors/alreadyCreated";
-import { LoginUseCase } from "../login";
-import { JwtMock } from "src/application/services/jwtMock";
-import { Password } from "src/application/entities/Password";
 import { NotFoundError } from "src/application/errors/notFound";
 import { WrongValueError } from "src/application/errors/wrongValue";
+import { JwtMock } from "src/application/services/jwtMock";
+import { InMemoryUserRepository } from "../../../repositories/inMemoryUserRepository";
+import { LoginUseCase } from "../login";
+import { makeUser } from "./factories/makeUser";
 
 
 const makeSut = () => {
