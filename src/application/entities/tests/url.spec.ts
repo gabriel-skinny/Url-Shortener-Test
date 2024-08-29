@@ -4,7 +4,6 @@ describe("Url entity", () => {
     it("Should create a url entity", () => {
         const url = new Url({
             destinyUrl: "densityUrl.com",
-            shortenedUrl: "shortnedUrl.com"
         })
 
         expect(url).toBeTruthy();
@@ -14,7 +13,6 @@ describe("Url entity", () => {
     it("Should add the click number of a url", () => {
         const url = new Url({
             destinyUrl: "densityUrl.com",
-            shortenedUrl: "shortnedUrl.com"
         });
 
         url.click();
