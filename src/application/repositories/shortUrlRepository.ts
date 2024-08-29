@@ -6,7 +6,7 @@ export abstract class AbstractShortUrlRepository {
     destinyUrl: string;
     userId?: string;
   }): Promise<Url | null>;
-  abstract findByUrlDestinyUrl(data: {
+  abstract findByUrlDestinyUrlAndUserIsNull(data: {
     destinyUrl: string;
   }): Promise<Url | null>;
   abstract findByIdAndUserId(data: {

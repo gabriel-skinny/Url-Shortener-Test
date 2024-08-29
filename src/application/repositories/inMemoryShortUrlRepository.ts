@@ -17,7 +17,9 @@ export class InMemoryShortUrlRepository implements AbstractShortUrlRepository {
     );
   }
 
-  async findByUrlDestinyUrl(data: { destinyUrl: string }): Promise<Url | null> {
+  async findByUrlDestinyUrlAndUserIsNull(data: {
+    destinyUrl: string;
+  }): Promise<Url | null> {
     return this.shortUrlDatabase.find(
       (url) => url.destinyUrl == data.destinyUrl,
     );
