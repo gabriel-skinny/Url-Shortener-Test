@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsUUID, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsUUID, IsUrl } from 'class-validator';
 
 export class CreateUrlDTO {
   @IsUrl({
@@ -8,10 +8,6 @@ export class CreateUrlDTO {
   })
   @IsNotEmpty()
   destinyUrl: string;
-
-  @IsUUID()
-  @IsOptional()
-  userId?: string;
 }
 
 export class DeleteUrlDTO {

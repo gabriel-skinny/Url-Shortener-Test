@@ -20,7 +20,7 @@ import { RedirectUseCase } from 'src/application/use-cases/url-shortener/redirec
 import { UpdateUrlUseCase } from 'src/application/use-cases/url-shortener/update';
 import { BaseControllerReturn } from 'src/infra/interfaces/baseController';
 import { ILoginTokenData } from 'src/infra/services/Auth';
-import { ConditionalGuardByField } from '../decoretors/conditionalGuard';
+import { ConditionalGuardByBearer } from '../decoretors/conditionalGuard';
 import { CreateUrlDTO, UpdateUrlDTO } from '../dto/url';
 import { AuthGuard } from '../guards/Autentication';
 import { IUrlViewModel, UrlViewModel } from '../view-models/url';
@@ -36,14 +36,15 @@ export class UrlController {
   ) {}
 
   @Post('url')
-  @ConditionalGuardByField('userId')
+  @ConditionalGuardByBearer()
   @UseGuards(AuthGuard)
   async create(
-    @Body() { destinyUrl, userId }: CreateUrlDTO,
+    @Body() { destinyUrl }: CreateUrlDTO,
+    @Req() { user }: { user: ILoginTokenData },
   ): Promise<BaseControllerReturn<{ shortednedUrl: string }>> {
     const { shortednedUrl } = await this.createUrlUseCase.execute({
       destinyUrl,
-      userId,
+      userId: user?.userId,
     });
 
     return {
