@@ -4,12 +4,15 @@ import { ValidationPipe } from '@nestjs/common';
 import 'dotenv/config';
 import { CustomExceptionFilter } from './infra/http/filters/httpException';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new CustomExceptionFilter());
+
+  app.use(helmet());
 
   const config = new DocumentBuilder()
     .setTitle('Encurtador de Url')
