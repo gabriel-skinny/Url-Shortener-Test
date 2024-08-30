@@ -3,7 +3,7 @@ import { PASSWORD_SALT } from '../constants/password';
 
 export class Password {
   private _password: string;
-  cryptoAdapter: CryptoAdapter;
+  private cryptoAdapter: CryptoAdapter;
 
   constructor(value: string) {
     this.cryptoAdapter = new CryptoAdapter();
