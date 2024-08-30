@@ -1,19 +1,19 @@
 version: '3.1'
 
 services:
-server:
-  build:
-    context: .
-    target: prod
-  environment:
-    NODE_ENV: production
-    MYSQL_HOST: mysql
-    REDIS_HOST: redis
-  ports:
-    - 3000:3000
-  depends_on:
-    - mysql
-    - redis
+  server:
+    build:
+      context: .
+      target: prod
+    environment:
+      NODE_ENV: production
+      MYSQL_HOST: mysql
+      REDIS_HOST: redis
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql
+      - redis
 
   mysql:
     image: mysql
