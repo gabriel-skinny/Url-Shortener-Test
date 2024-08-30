@@ -4,6 +4,13 @@ Minha solução para o test de encurtador de Url usando o framework Nestjs com a
 
 Tecnologias Usadas: Nesjs, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
 
+## Tabela de conteúdos
+
+- [Desenvolvimentos adicionais](#desenvolvimento)
+- [Features](#features)
+- [Banco de dados](#banco_de_dados)
+
+<a name="desenvolvimento"/>
 ## Desenvolvimentos adicionais:
 
 - Cache de Url encurtada
@@ -42,7 +49,9 @@ Url Shortneer:
 - Editar Url de destino cadastrada
 - Apagar Url cadastrada
 
-## Encurtar a url
+## Features
+
+### Encurtar a url
 
 - Client: HTTP - POST
 - Validação condicional apenas se passar o userId
@@ -62,7 +71,7 @@ Problemas:
 Soluções:
 2: Expirar as urls e deleta-las no banco depois de 1 ano.
 
-## Redirecionar
+### Redirecionar
 
 - Cliente: HTTP - POST redirect/value
 - Api: redirect(redirectValue)
@@ -80,7 +89,7 @@ Soluções:
 1: Adicionar index por redirectUrl(Downside: Vai demorar mais tempo para registrar)
 2: Adicionar cache
 
-## Listar Urls por Usuario
+### Listar Urls por Usuario
 
 - Client: HTTP - GET
 - Rota autenticada
@@ -88,7 +97,7 @@ Soluções:
   - Pega todos as urls daquele usuario
 - Banco: Mysql
 
-## Editar Url de destino
+### Editar Url de destino
 
 - Client: HTTP - PATCH
 - Rota autenticada
@@ -97,7 +106,7 @@ Soluções:
   - Atualiza com a nova url
 - Banco: Mysql
 
-## Deletar Url
+### Deletar Url
 
 - Client: HTTP - DELETE
 - Rota autenticada
@@ -105,7 +114,8 @@ Soluções:
   - Faz soft delete na url
 - Banco: Mysql
 
-## Tabelas
+<a name="banco_de_dados"/>
+## Tabelas do banco
 
 Usuario:
 
