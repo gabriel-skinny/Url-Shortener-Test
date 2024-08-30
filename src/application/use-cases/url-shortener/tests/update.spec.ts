@@ -19,21 +19,21 @@ describe('Update url use case', () => {
     const urlCreated = makeShortUrl({ userId });
     await urlRepository.save(urlCreated);
 
-    const newDesitinyUrl = 'newDestinty.com';
+    const newDestinyUrl = 'newDestinty.com';
     await updateUrlUseCase.execute({
       urlId: urlCreated.id,
-      newDesitinyUrl,
+      newDestinyUrl,
       userId,
     });
 
-    expect(urlRepository.shortUrlDatabase[0].destinyUrl).toBe(newDesitinyUrl);
+    expect(urlRepository.shortUrlDatabase[0].destinyUrl).toBe(newDestinyUrl);
   });
 
   it('Should throw an notFound error if the short url passed does not exists', async () => {
-    const { updateUrlUseCase, urlRepository } = makeSut();
+    const { updateUrlUseCase } = makeSut();
 
     const updateUrlUseCasePromise = updateUrlUseCase.execute({
-      newDesitinyUrl: 'newDestinty@gmail',
+      newDestinyUrl: 'newDestinty@gmail',
       urlId: 'NonExistingUrlId',
       userId: 'userId123',
     });

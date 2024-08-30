@@ -72,8 +72,7 @@ describe('Create short url use case', () => {
   });
 
   it('Should throw an error with user passed does not exists', async () => {
-    const { shortUrlRepository, createShortUrlUseCase, userExistsByIdUseCase } =
-      makeSut();
+    const { createShortUrlUseCase, userExistsByIdUseCase } = makeSut();
 
     userExistsByIdUseCase.execute = jest.fn().mockReturnValueOnce(false);
 

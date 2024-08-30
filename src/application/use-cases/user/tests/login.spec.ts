@@ -19,6 +19,7 @@ describe('Login user use case', () => {
 
     const plainPassword = 'plainPassword';
     const userRegistred = makeUser({ password: plainPassword });
+    userRegistred.password_hash.hashPassword();
     await userRepository.save(userRegistred);
 
     const response = await loginUseCase.execute({
@@ -47,6 +48,7 @@ describe('Login user use case', () => {
 
     const plainPassword = 'plainPassword';
     const userRegistred = makeUser({ password: plainPassword });
+    userRegistred.password_hash.hashPassword();
     await userRepository.save(userRegistred);
 
     const loginUseCasePromise = loginUseCase.execute({

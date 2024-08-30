@@ -1,4 +1,3 @@
-import { Password } from '../Password';
 import { User } from '../User';
 
 describe('User entity', () => {

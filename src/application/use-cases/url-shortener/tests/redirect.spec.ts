@@ -11,7 +11,7 @@ const makeSut = () => {
 };
 
 describe('Redirect url use case', () => {
-  it('Should return the desitiny url of a shortenedUrl', async () => {
+  it('Should return the desitiny url of a shortenedUrl and add a click to the url', async () => {
     const { urlRepository, redirectUseCase } = makeSut();
 
     const userId = 'userId12';
@@ -19,17 +19,18 @@ describe('Redirect url use case', () => {
     await urlRepository.save(urlShortened);
 
     const response = await redirectUseCase.execute({
-      shortenedUrl: urlShortened.shortenedUrl,
+      shortenedUrlValue: urlShortened.shortenedUrl.split('/')[1],
     });
 
     expect(response.desitinyUrl).toBe(urlShortened.destinyUrl);
+    expect(urlRepository.shortUrlDatabase[0].clickNumber).toBe(1);
   });
 
   it('Should throw an notFound error if the short url passed does not exists', async () => {
     const { redirectUseCase } = makeSut();
 
     const updateUrlUseCasePromise = redirectUseCase.execute({
-      shortenedUrl: 'NonExistingShortenedUrl',
+      shortenedUrlValue: 'NonExistingShortenedUrl',
     });
 
     expect(updateUrlUseCasePromise).rejects.toStrictEqual(
