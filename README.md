@@ -13,6 +13,7 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 - [Features](#features)
 - [Banco de dados](#tabelas-do-banco)
 - [Como rodar](#como-rodar)
+- [Documentação](#documentação)
 - [Futuros Problemas e Soluções](#futuros-problemas-e-soluções)
 
 ## Funcionalidades
@@ -36,6 +37,7 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 - Validação de dados de entrada e saída
 - Tratamento de erros
 - Docker compose com o banco de dados e imagem da aplicação
+- Helmet para melhorar a segurançao ao tratar requests HTTP
 
 ## Conceitos usados
 
@@ -49,6 +51,8 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 - View/Model
 - Adapter
 - DTO Validation
+- Chaching
+- Asychrnous Programming
 
 ## Requirements
 
@@ -162,10 +166,11 @@ Url:
 
 ### Localmente
 
-Rodar
+Rodar: ``docker-compose up -d --build```
 
-- yarn start
-- docker-compose up -d --build
+## Documentação
+
+Documentação feita no Swagger, pode ser acessada depois de rodar a aplicação nessa rota: `http://localhost:3000/api#/`
 
 ## Futuros problemas e soluções
 
