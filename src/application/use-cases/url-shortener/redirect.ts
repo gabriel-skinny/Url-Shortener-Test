@@ -33,7 +33,11 @@ export class RedirectUseCase {
 
     if (!url) throw new NotFoundError('Shortened url not found with that name');
 
-    this.cacheService.set({ key: shortenedUrl, value: url.destinyUrl });
+    this.cacheService.set({
+      key: shortenedUrl,
+      value: url.destinyUrl,
+      expiresInSeconds: 60 * 60 * 1,
+    });
 
     url.click();
     this.shortUrlRepository.save(url);

@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Url } from 'src/application/entities/Url';
 import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
+import { DataSource, IsNull, Repository } from 'typeorm';
 import { UrlEntity } from '../entities/url';
-import { IsNull, Raw, Repository } from 'typeorm';
 import { UrlEntityMapper } from '../mappers/url';
 
 @Injectable()
@@ -11,6 +11,7 @@ export class UrlRepository implements AbstractShortUrlRepository {
   constructor(
     @InjectRepository(UrlEntity)
     private urlRepository: Repository<UrlEntity>,
+    private dataSource: DataSource,
   ) {}
 
   async save(url: Url): Promise<void> {
@@ -82,11 +83,13 @@ export class UrlRepository implements AbstractShortUrlRepository {
   }
 
   async updateClickByShortenedUrl(shortenedUrl: string) {
-    await this.urlRepository.update(
-      {
-        clickNumber: Raw((alias) => alias + 1),
-      },
-      { shortenedUrl },
-    );
+    this.dataSource
+      .createQueryBuilder()
+      .update<UrlEntity>(UrlEntity)
+      .set({
+        clickNumber: () => 'clickNumber + 1',
+      })
+      .where('shortenedUrl = :shortenedUrl', { shortenedUrl })
+      .execute();
   }
 }

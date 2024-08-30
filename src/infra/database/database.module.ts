@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UrlEntity } from './entities/url';
-import { UserEntity } from './entities/user';
-import { UserRepository } from './repositories/userRepository';
-import { UrlRepository } from './repositories/urlRepository';
+import 'dotenv/config';
 import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
 import { AbstractUserRepository } from 'src/application/repositories/userRepository';
-import 'dotenv/config';
+import { UrlEntity } from './entities/url';
+import { UserEntity } from './entities/user';
+import { UrlRepository } from './repositories/urlRepository';
+import { UserRepository } from './repositories/userRepository';
+import { AbstractCacheService } from 'src/application/services/cache';
+import Redis from 'ioredis';
+import { CacheService } from './cache/cacheService';
 
 @Module({
   imports: [
@@ -31,6 +34,17 @@ import 'dotenv/config';
       provide: AbstractShortUrlRepository,
       useClass: UrlRepository,
     },
+    {
+      provide: AbstractCacheService,
+      useFactory: () => {
+        const redisConfig = new Redis(
+          Number(process.env.REDIS_PORT),
+          process.env.REDIS_HOST,
+        );
+
+        return new CacheService(redisConfig);
+      },
+    },
   ],
   exports: [
     {
@@ -40,6 +54,17 @@ import 'dotenv/config';
     {
       provide: AbstractShortUrlRepository,
       useClass: UrlRepository,
+    },
+    {
+      provide: AbstractCacheService,
+      useFactory: () => {
+        const redisConfig = new Redis(
+          Number(process.env.REDIS_PORT),
+          process.env.REDIS_HOST,
+        );
+
+        return new CacheService(redisConfig);
+      },
     },
   ],
 })
