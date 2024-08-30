@@ -7,11 +7,11 @@ Tecnologias Usadas: Nesjs, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
 ## Tabela de conteúdos
 
 - [Desenvolvimentos adicionais](#desenvolvimento)
-- [Conceitos usados](#conceitos_usados)
+- [Conceitos usados](#conceitos-usados)
 - [Requirements](#requirements)
 - [Features](#features)
-- [Banco de dados](#tabelas_do_banco)
-- [Futuros Problemas e Soluções](#futuros_problemas_e_solucoes)
+- [Banco de dados](#tabelas-do-banco)
+- [Futuros Problemas e Soluções](#futuros-problemas-e-solucoes)
 
 ## Desenvolvimentos adicionais:
 
