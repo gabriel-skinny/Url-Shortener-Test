@@ -9,10 +9,6 @@ export class InMemoryUserRepository implements AbstractUserRepository {
   }
 
   async existsByEmail(email: string): Promise<boolean> {
-    console.log({
-      database: this.userDatabase,
-      result: !!this.userDatabase.find((user) => user.email == email),
-    });
     return !!this.userDatabase.find((user) => user.email == email);
   }
 
