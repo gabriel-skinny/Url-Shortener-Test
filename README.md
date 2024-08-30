@@ -12,6 +12,7 @@ Tecnologias Usadas: Nesjs, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
 - [Requirements](#requirements)
 - [Features](#features)
 - [Banco de dados](#tabelas-do-banco)
+- [Como rodar](#como-rodar)
 - [Futuros Problemas e Soluções](#futuros-problemas-e-soluções)
 
 ## Funcionalidades
@@ -27,13 +28,14 @@ Tecnologias Usadas: Nesjs, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
 
 ## Desenvolvimentos adicionais:
 
-- Cache de Url encurtada
+- Cache de Url encurtada para redirecionamento
 - Encriptação de Senha
 - Autenticação com JWT
 - Testes Unitarios
 - Documentação no Swagger
 - Validação de dados de entrada e saída
 - Tratamento de erros
+- Docker compose com o banco de dados e imagem da aplicação
 
 ## Conceitos usados
 
@@ -89,11 +91,15 @@ Soluções:
 
 - Cliente: HTTP - POST redirect/value
 - Api: redirect(redirectValue)
-  - Encontra no banco a url destino pela url encurtada
-  - Retorna um erro se não encontrar
+  - Verificar se a url destino esta em cache
+  - Se sim: redireciona usuario
+  - Se não:
+    - Encontra no banco a url destino pela url encurtada
+    - Retorna um erro se não encontrar
+    - Redireciona o usuario
   - Adiciona um click na url encurtada
-  - Redireciona o usuario
 - Banco: Mysql
+- Cache: Redis
 
 Problemas:
 1: Rota que mais terá requisições e que faz algumas operações pesadas no banco de dados, um SELECT e um UPDATE
@@ -101,7 +107,7 @@ Problemas:
 
 Soluções:
 1: Adicionar index por redirectUrl(Downside: Vai demorar mais tempo para registrar)
-2: Adicionar cache
+2: Adicionar cache para as urls mais visitadas e fazer o update async do click
 
 ### Listar Urls por Usuario
 
@@ -151,4 +157,10 @@ Url:
 - deleted_at (Datetime)
 - updated_at (Datetime)
 
+## Como rodar
+
 ## Futuros problemas e soluções
+
+- Banco de Dados: Precisaremos escalar horizontalmente criando novo shards no banco de dados, seria bom trocar o banco de dados para um NOSQL como o MongoDB que facilitaria essa transição. Um dos problemas seria a lógica para organizar o sharing.
+
+- Reposta de Api na rota redirect: Precisaremos ter um load balancer, pode ser o do Kubernets que ira, em momentos de alto trafego, ir fornecendo containers para lidar com as requisições em demanda.
