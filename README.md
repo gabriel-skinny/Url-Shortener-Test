@@ -7,10 +7,12 @@ Tecnologias Usadas: Nesjs, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
 ## Tabela de conteúdos
 
 - [Desenvolvimentos adicionais](#desenvolvimento)
+- [Conceitos usados](#conceitos_usados)
+- [Requirements](#requirements)
 - [Features](#features)
-- [Banco de dados](#banco_de_dados)
+- [Banco de dados](#tabelas_do_banco)
+- [Futuros Problemas e Soluções](#futuros_problemas_e_solucoes)
 
-<a name="desenvolvimento"/>
 ## Desenvolvimentos adicionais:
 
 - Cache de Url encurtada
@@ -114,7 +116,6 @@ Soluções:
   - Faz soft delete na url
 - Banco: Mysql
 
-<a name="banco_de_dados"/>
 ## Tabelas do banco
 
 Usuario:
@@ -137,3 +138,5 @@ Url:
 - created_at (Datetime)
 - deleted_at (Datetime)
 - updated_at (Datetime)
+
+## Futuros problemas e soluções
