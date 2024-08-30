@@ -43,4 +43,12 @@ export class InMemoryShortUrlRepository implements AbstractShortUrlRepository {
       (url) => url.shortenedUrl == shortenedUrl,
     );
   }
+
+  async updateClickByShortenedUrl(shortenedUrl: string) {
+    const foundedIndex = this.shortUrlDatabase.findIndex(
+      (url) => url.shortenedUrl == shortenedUrl,
+    );
+
+    this.shortUrlDatabase[foundedIndex].click();
+  }
 }
