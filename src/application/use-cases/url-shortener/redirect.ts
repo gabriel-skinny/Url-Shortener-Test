@@ -22,6 +22,9 @@ export class RedirectUseCase {
 
     if (!url) throw new NotFoundError('Shortened url not found with that name');
 
+    url.click();
+    await this.shortUrlRepository.save(url);
+
     return { desitinyUrl: url.destinyUrl };
   }
 }
