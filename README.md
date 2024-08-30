@@ -2,7 +2,7 @@
 
 Minha solução para o test de encurtador de Url usando o framework Nestjs com as ultimas tecnologias e as melhores praticas de desenvolvimendo
 
-Tecnologias Usadas: Nesjs, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
+Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
 
 ## Tabela de conteúdos
 
@@ -85,6 +85,7 @@ Problemas:
 2: Pode gastar muito espaço as urls encurtadas, se 1 usuario criar 10 urls por dia, com 100.000 usuario em 1 ano teremos 3650M registros no banco, em 3 anos chegarem a 1B.
 
 Soluções:
+1: Usar algoritimo MD5 que hasheia a url destino passada e pega os primeiros 6 caracters. Tem possibilidade de duplicação.
 2: Expirar as urls e deleta-las no banco depois de 1 ano.
 
 ### Redirecionar
@@ -107,7 +108,7 @@ Problemas:
 
 Soluções:
 1: Adicionar index por redirectUrl(Downside: Vai demorar mais tempo para registrar)
-2: Adicionar cache para as urls mais visitadas e fazer o update async do click
+2: Adicionar cache para as urls mais visitadas durante 6 horas e fazer o update async do clickNumber
 
 ### Listar Urls por Usuario
 
@@ -159,8 +160,15 @@ Url:
 
 ## Como rodar
 
+### Localmente
+
+Rodar
+
+- yarn start
+- docker-compose up -d --build
+
 ## Futuros problemas e soluções
 
-- Banco de Dados: Precisaremos escalar horizontalmente criando novo shards no banco de dados, seria bom trocar o banco de dados para um NOSQL como o MongoDB que facilitaria essa transição. Um dos problemas seria a lógica para organizar o sharing.
+- Banco de Dados: Precisaremos escalar horizontalmente criando novo shards no banco de dados, seria bom trocar o banco de dados para um NOSQL como o MongoDB que facilitaria essa transição. Um dos problemas seria a lógica para organizar o sharding.
 
-- Reposta de Api na rota redirect: Precisaremos ter um load balancer, pode ser o do Kubernets que ira, em momentos de alto trafego, ir fornecendo containers para lidar com as requisições em demanda.
+- Resposta de Api na rota redirect: Precisaremos ter um load balancer com um algoritimo baseado em tempo de resposta, para jogar para as instancias que estão redirecionando mais rapidamente.
