@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Url } from 'src/application/entities/Url';
 import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
 import { UrlEntity } from '../entities/url';
-import { IsNull, Repository } from 'typeorm';
+import { IsNull, Raw, Repository } from 'typeorm';
 import { UrlEntityMapper } from '../mappers/url';
 
 @Injectable()
@@ -79,5 +79,14 @@ export class UrlRepository implements AbstractShortUrlRepository {
     if (!urlFound) return null;
 
     return UrlEntityMapper.toDomain(urlFound);
+  }
+
+  async updateClickByShortenedUrl(shortenedUrl: string) {
+    await this.urlRepository.update(
+      {
+        clickNumber: Raw((alias) => alias + 1),
+      },
+      { shortenedUrl },
+    );
   }
 }

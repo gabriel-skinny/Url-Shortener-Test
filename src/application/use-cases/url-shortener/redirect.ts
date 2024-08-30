@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from '../../errors/notFound';
 import { AbstractShortUrlRepository } from '../../repositories/shortUrlRepository';
+import { AbstractCacheService } from 'src/application/services/cache';
 
 interface IRedirectUseCaseParams {
   shortenedUrlValue: string;
@@ -12,18 +13,30 @@ interface IRedirectUseCaseReturn {
 
 @Injectable()
 export class RedirectUseCase {
-  constructor(private shortUrlRepository: AbstractShortUrlRepository) {}
+  constructor(
+    private shortUrlRepository: AbstractShortUrlRepository,
+    private cacheService: AbstractCacheService,
+  ) {}
 
   async execute({
     shortenedUrlValue,
   }: IRedirectUseCaseParams): Promise<IRedirectUseCaseReturn> {
     const shortenedUrl = `${process.env.HOST_URL}/${shortenedUrlValue}`;
+
+    const cachedDestitnyUrl = await this.cacheService.get<string>(shortenedUrl);
+    if (cachedDestitnyUrl) {
+      this.shortUrlRepository.updateClickByShortenedUrl(shortenedUrl);
+
+      return { desitinyUrl: cachedDestitnyUrl };
+    }
     const url = await this.shortUrlRepository.findByShortenedUrl(shortenedUrl);
 
     if (!url) throw new NotFoundError('Shortened url not found with that name');
 
+    this.cacheService.set({ key: shortenedUrl, value: url.destinyUrl });
+
     url.click();
-    await this.shortUrlRepository.save(url);
+    this.shortUrlRepository.save(url);
 
     return { desitinyUrl: url.destinyUrl };
   }

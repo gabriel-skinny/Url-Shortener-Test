@@ -15,4 +15,5 @@ export abstract class AbstractShortUrlRepository {
   }): Promise<Url | null>;
   abstract findManyByUserId(userId: string): Promise<Url[]>;
   abstract findByShortenedUrl(shortenedUrl: string): Promise<Url | null>;
+  abstract updateClickByShortenedUrl(shortenedUrl: string);
 }
