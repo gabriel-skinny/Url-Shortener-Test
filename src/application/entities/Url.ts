@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { generateRandomString } from '../helpers/generateRandomString';
+import * as md5 from 'md5';
 
 export interface IUrlProps {
   id?: string;
@@ -34,7 +34,8 @@ export class Url {
   }
 
   private makeShortenedUrl() {
-    return `${process.env.HOST_URL}/${generateRandomString(6)}`;
+    const formatedMd5HashedLongUrl = md5(this.destinyUrl).substring(0, 6);
+    return `${process.env.HOST_URL}/${formatedMd5HashedLongUrl}`;
   }
 
   public click() {
