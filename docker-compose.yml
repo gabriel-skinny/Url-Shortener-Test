@@ -1,6 +1,20 @@
 version: '3.1'
 
 services:
+  #  server:
+  #    build:
+  #      context: .
+  #      target: prod
+  #    environment:
+  #      NODE_ENV: production
+  #      MYSQL_HOST: mysql
+  #      REDIS_HOST: redis
+  #    ports:
+  #      - 3000:3000
+  #    depends_on:
+  #      - mysql
+  #      - redis
+
   mysql:
     image: mysql
     restart: always
@@ -10,11 +24,14 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
 
-  phpmyadmin:
-    image: phpmyadmin
+    volumes:
+      - persitence_volume:/var/lib/mysql
+
+  redis:
+    image: redis/redis-stack-server
     restart: always
     ports:
-      - 8080:80
-    environment:
-      - PMA_ARBITRARY=1
-      - PMA_HOST=mysql
+      - '${REDIS_DESKTOP_PORT}:${REDIS_PORT}'
+
+volumes:
+  persitence_volume:
