@@ -6,12 +6,24 @@ Tecnologias Usadas: Nesjs, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
 
 ## Tabela de conteúdos
 
+- [Funcionalidades](#funcionalidades)
 - [Desenvolvimentos adicionais](#desenvolvimento)
 - [Conceitos usados](#conceitos-usados)
 - [Requirements](#requirements)
 - [Features](#features)
 - [Banco de dados](#tabelas-do-banco)
-- [Futuros Problemas e Soluções](#futuros-problemas-e-solucoes)
+- [Futuros Problemas e Soluções](#futuros-problemas-e-soluções)
+
+## Funcionalidades
+
+- Cadastro de Usuario
+- Login de Usuario
+- Criação de link encurtado para não usuarios
+- Criação de link encurtado para usuarios autenticados
+- Listagem de links escurtados para usuario autenticado
+- Edicação de link encurtado para usuario autenticado
+- Deleção de link encurtado para usuario autenticado
+- Redirecionamento para link origem atráves de link encurtado e contabilização de redirecionamento por link
 
 ## Desenvolvimentos adicionais:
 
