@@ -11,13 +11,13 @@ describe('Url entity', () => {
     expect(url.id).toBeTruthy();
   });
 
-  it('Should create a url entity with a random shortened url if none was passed', () => {
+  it('Should create a url entity with a random shortened url if none was passed with 6 caracters length', () => {
     const url = new Url({
       destinyUrl: 'densityUrl.com',
     });
 
-    expect(url).toBeTruthy();
     expect(url.shortenedUrl).toBeTruthy();
+    expect(url.shortenedUrl.split('/')[1]).toHaveLength(6);
   });
 
   it('Should add the click number of a url', () => {
