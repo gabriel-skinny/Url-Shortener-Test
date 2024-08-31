@@ -25,8 +25,10 @@ import { CreateUrlDTO, UpdateUrlDTO } from '../dto/url.dto';
 import { AuthGuard } from '../guards/Autentication';
 import { IUrlViewModel, UrlViewModel } from '../view-models/url';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @ApiTags('Url routes')
+@SkipThrottle()
 @Controller()
 export class UrlController {
   constructor(
