@@ -2,7 +2,7 @@
 
 Minha solução para o test de encurtador de Url usando o framework Nestjs com as ultimas tecnologias e as melhores praticas de desenvolvimendo
 
-Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
+Tecnologias Usadas: Nestjs, Typescript, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Docker-Compose
 
 ## Tabela de conteúdos
 
