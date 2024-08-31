@@ -14,19 +14,9 @@ import {
   AbstractUserExistsByIdUseCase,
   UserExistsByIdUseCase,
 } from 'src/application/use-cases/user/exists-by-id';
-import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
-  imports: [
-    DatabaseModule,
-    ServiceModule,
-    ThrottlerModule.forRoot([
-      {
-        ttl: 1000,
-        limit: 100,
-      },
-    ]),
-  ],
+  imports: [DatabaseModule, ServiceModule],
   providers: [
     CreateShortUrlUseCase,
     DeleteUrlUseCase,

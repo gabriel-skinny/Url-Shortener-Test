@@ -1,11 +1,13 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { CreateUserUseCase } from 'src/application/use-cases/user/create';
 import { LoginUseCase } from 'src/application/use-cases/user/login';
 import { BaseControllerReturn } from 'src/infra/interfaces/baseController';
 import { CreateUserDTO, LoginDTO } from '../dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('User routes')
+@UseGuards(ThrottlerGuard)
 @Controller('user')
 export class UserController {
   constructor(
