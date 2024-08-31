@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './controllers/user';
-import { UrlController } from './controllers/url-shortener';
+import { UserController } from './controllers/user.controller';
+import { UrlController } from './controllers/url-shortener.controller';
 import { CreateShortUrlUseCase } from 'src/application/use-cases/url-shortener/create';
 import { DeleteUrlUseCase } from 'src/application/use-cases/url-shortener/delete';
 import { GetUrlsByUserIdUseCase } from 'src/application/use-cases/url-shortener/get-urls-by-user-id';
