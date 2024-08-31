@@ -19,9 +19,17 @@ async function bootstrap() {
     .setTitle('Encurtador de Url')
     .setDescription('Uma api que encurta qualquer url')
     .setVersion('1.0')
-    .addTag('urlShortener')
-    .addBearerAuth()
+    .addBearerAuth(
+      {
+        bearerFormat: 'Bearer',
+        scheme: 'Bearer',
+        type: 'http',
+        in: 'Header',
+      },
+      'JWTAuthorization',
+    )
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
