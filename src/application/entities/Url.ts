@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
-import * as md5 from 'md5';
+
+import ShortUniqueId from 'short-unique-id';
 
 export interface IUrlProps {
   id?: string;
@@ -37,8 +38,10 @@ export class Url {
   public makeShortenedUrl(value?: string) {
     if (value) this._shortenedUrl = value;
     else {
-      const formatedMd5HashedLongUrl = md5(this.destinyUrl).substring(0, 6);
-      this._shortenedUrl = `${process.env.HOST_URL}/${formatedMd5HashedLongUrl}`;
+      const { randomUUID } = new ShortUniqueId({
+        length: 6,
+      });
+      this._shortenedUrl = `${process.env.HOST_URL}/${randomUUID()}`;
     }
   }
 
