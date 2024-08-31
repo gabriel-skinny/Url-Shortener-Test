@@ -14,6 +14,7 @@ FROM base as prod
 COPY package*.json ./
 RUN npm i
 COPY . .
+CMD npm build
 CMD npm run start:prod
 
 FROM base as test
