@@ -48,8 +48,7 @@ export class CreateShortUrlUseCase {
       destinyUrl,
       userId,
     });
-
-    await this.shortUrlRepository.save(url);
+    this.shortUrlRepository.save(url);
 
     return { shortednedUrl: url.shortenedUrl };
   }
