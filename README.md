@@ -10,7 +10,8 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 - [Desenvolvimentos adicionais](#desenvolvimento)
 - [Conceitos usados](#conceitos-usados)
 - [Requirements](#requirements)
-- [Features](#features)
+- [Performance da aplicação](#performance-da-aplicação)
+- [Rotas](#rotas)
 - [Banco de dados](#tabelas-do-banco)
 - [Como rodar](#como-rodar)
 - [Documentação](#documentação)
@@ -38,7 +39,6 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 - Tratamento de erros
 - Docker compose com o banco de dados e imagem da aplicação
 - Helmet para melhorar a segurançao ao tratar requests HTTP
-- Deploy do código na heroku
 
 ## Conceitos usados
 
@@ -59,24 +59,57 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 
 User:
 
-- Criar um usuario
-- Logar com usuario
+- Usuario pode criar um conta
+- Usuario pode se autenticar
+- Usuario pode encurtar uma url, e ela terá apenas 6 digitos
+- Não usuario pode encurtar uma url, ela terá apenas 6 digitos
+- Usuario pode usar a url encurtada para se redirecionar para a url destino
+- Não usuario pode usar a url encurtada para se redirecionar para a url destino
+- Usuario pode listar suas urls encurtadas
+- Usuario pode editar suas urls encurtadas, alterando seu destino
+- Usuario pode apagar uma url encurtada
 
-Url Shortneer:
+## Performance da aplicação
 
-- Criar uma url encurtada com 6 digitos, atrela-lo ao usuario se for autenticado
-- Redirecionar para a url destinataria e salvar os cliques
-- Listar Urls por Usuario
-- Editar Url de destino cadastrada
-- Apagar Url cadastrada
+Possíveis dados do projeto:
 
-## Features
+- 10.000 usuarios
+- 1 Usuário encurta em media 5 urls por dia
+- 1 url encurtada é acessada em media 100 vezes
+- Então temos 50 mil requisições para encurtar url por dia: 0,5 req/s
+- Em horário de pico em um intervalo de 4 horas temos: 2,3 req/s
+- Temos 5M de requisições para redirecionar url por dia: 57 req/s
+- Em horário de pico em um intervalo de 4 horas temos: 347 req/s
+
+Rota de criação de url encurtada:
+
+- Demorará em media 200ms
+- Faz leitura no banco de dados
+- Adicionará um registro no banco
+  - Dado que cada registro terá 127 bytes: 2,3 GB por Ano
+- Banco precisará aguentar fazer essas 2 operações 2 vezes por segundo
+
+Rota de criação de redirecionamento:
+
+- Demorará em media 100ms
+- Pega do cache se existe
+  - Com o cache durando 1 dia teremos 50mil urls cacheadas, ocupando 6,3MB de ram
+- Faz leitura no banco se não pegou do cache
+- Atualizará um registro no banco
+- Banco precisará aguentar 1 operações 374 vezes por segundo + 10% das requisições não cacheadas que são 37 requisições por segundo: 400 operações por segundo, quase 4 operações simultâneas
+
+Solução realizadas para escalar verticalmente:
+
+- Usando o cluster mode do Nodejs para criar 4 processos ou processos baseado no número de cores da CPU rodando a aplicação e usando o algoritimos Round-Robin para distribuir as requests entre os processos, para lidar com request simultaneas baseada no numero de cores da CPU.
+- Adicionado cache com Redis para aliviar o banco de dados na rota de Redirect
+
+## Rotas
 
 ### Encurtar a url
 
 - Client: HTTP - POST
-- Validação condicional apenas se passar o userId
-- API: shortUrl(url: string; userId?: string): shortenedUrl
+- Autenticação condicional apenas se o token
+- API: shortUrl(url: string; token?: string): shortenedUrl
   - Se for Usuario
     - Verifica se já tem a memsa url encurtada no banco e a retorna
     - Se não cria um novo registro com ele
@@ -87,11 +120,9 @@ Url Shortneer:
 
 Problemas:
 1: As urls encurtadas podem acabar se repetindo
-2: Pode gastar muito espaço as urls encurtadas, se 1 usuario criar 10 urls por dia, com 100.000 usuario em 1 ano teremos 3650M registros no banco, em 3 anos chegarem a 1B.
 
 Soluções:
-1: Usar algoritimo MD5 que hasheia a url destino passada e pega os primeiros 6 caracters. Tem possibilidade de duplicação.
-2: Expirar as urls e deleta-las no banco depois de 1 ano.
+1: Usar algoritimo MD5 que hasheia a url destino passada e pega os primeiros 6 caracters, isso criara um hash unico por url de destino. Tem possibilidade de duplicação, mas podemos estorar um erro no banco de dados caso esse campo esteja duplicado.
 
 ### Redirecionar
 
@@ -129,6 +160,7 @@ Soluções:
 - Rota autenticada
 - Api: updateUrl(userId, urlShortenedID, newDesintyUrl)
   - Verifica se a url existe
+  - Verifica se a url de destino já foi usada
   - Atualiza com a nova url
 - Banco: Mysql
 
@@ -167,6 +199,7 @@ Url:
 
 ### Localmente
 
+Criar .env baseado no .env.example
 Rodar: ``docker-compose up -d --build```
 
 ## Documentação
@@ -175,6 +208,8 @@ Documentação feita no Swagger, pode ser acessada depois de rodar a aplicação
 
 ## Futuros problemas e soluções
 
-- Banco de Dados: Precisaremos escalar horizontalmente criando novo shards no banco de dados, seria bom trocar o banco de dados para um NOSQL como o MongoDB que facilitaria essa transição. Um dos problemas seria a lógica para organizar o sharding.
+- Banco de Dados: Precisaremos escalar horizontalmente criando novo shards no banco de dados, seria bom trocar o banco de dados para um NOSQL como o MongoDB que facilitaria essa transição. Um dos problemas seria a lógica para determinar qual shard seria usado, mas isso poderia ser baseado no número do shortened url gerado: os que foram gerados começando com a-d, vão para o database 1, os de d-h para o database 2, e etc.
 
-- Resposta de Api na rota redirect: Precisaremos ter um load balancer com um algoritimo baseado em tempo de resposta, para jogar para as instancias que estão redirecionando mais rapidamente.
+- Resposta da Api na rota redirect: Precisaremos ter mais instancias da nossa aplicação rodando e ter um load balancer como um NGNIX com um algoritimo baseado em tempo de resposta, para jogar as novas requests para instancias que estão redirecionando mais rapidamente. Isso precisa escalar junto com o banco de dados que é nosso maior ponto de gargalo, precisamos garantir uma relação de 1:2 de instancias entre nossa aplicação com o banco de dados para não lhe causar overhead.
+
+- Fila para atualizar o ClickNumber: Não é necessario ter uma atualização rapida do clickNumber toda vez que tem um redirect, podemos jogar os updates em um redis-channel, e outro serviço consome essa fila e vai rodando os updates aos poucos no banco.
