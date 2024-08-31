@@ -38,6 +38,7 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 - Tratamento de erros
 - Docker compose com o banco de dados e imagem da aplicação
 - Helmet para melhorar a segurançao ao tratar requests HTTP
+- Deploy no heroku
 
 ## Conceitos usados
 
