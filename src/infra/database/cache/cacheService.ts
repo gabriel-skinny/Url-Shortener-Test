@@ -19,4 +19,8 @@ export class CacheService implements AbstractCacheService {
   async get<T>(key: string): Promise<T> {
     return this.redis.get(key) as T;
   }
+
+  async delete(key: string): Promise<void> {
+    this.redis.del(key);
+  }
 }
