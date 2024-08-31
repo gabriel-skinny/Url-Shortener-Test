@@ -3,17 +3,20 @@ import { InMemoryShortUrlRepository } from 'src/application/repositories/inMemor
 
 import { makeShortUrl } from './factories/makeShortUrl';
 import { UpdateUrlUseCase } from '../update';
+import { AlreadyCreatedError } from 'src/application/errors/alreadyCreated';
+import { InMemoryCacheService } from 'src/application/services/inMemoryCache';
 
 const makeSut = () => {
   const urlRepository = new InMemoryShortUrlRepository();
-  const updateUrlUseCase = new UpdateUrlUseCase(urlRepository);
+  const cacheService = new InMemoryCacheService();
+  const updateUrlUseCase = new UpdateUrlUseCase(urlRepository, cacheService);
 
-  return { urlRepository, updateUrlUseCase };
+  return { urlRepository, updateUrlUseCase, cacheService };
 };
 
 describe('Update url use case', () => {
-  it('Should update a short url', async () => {
-    const { urlRepository, updateUrlUseCase } = makeSut();
+  it('Should update a short url destiny, create a new shortened url and delete previous shortened url key from cache', async () => {
+    const { urlRepository, updateUrlUseCase, cacheService } = makeSut();
 
     const userId = 'userId12';
     const urlCreated = makeShortUrl({ userId });
@@ -27,6 +30,10 @@ describe('Update url use case', () => {
     });
 
     expect(urlRepository.shortUrlDatabase[0].destinyUrl).toBe(newDestinyUrl);
+    expect(urlRepository.shortUrlDatabase[0].destinyUrl).not.toBe(
+      urlCreated.shortenedUrl,
+    );
+    expect(cacheService.cacheDatabase).toStrictEqual({});
   });
 
   it('Should throw an notFound error if the short url passed does not exists', async () => {
@@ -40,6 +47,25 @@ describe('Update url use case', () => {
 
     expect(updateUrlUseCasePromise).rejects.toStrictEqual(
       new NotFoundError('Url to update not found'),
+    );
+  });
+
+  it('Should throw an AlreadyCreatedError error if the new desinty url is already registred for that user', async () => {
+    const { urlRepository, updateUrlUseCase } = makeSut();
+
+    const userId = 'userId12';
+    const urlCreated = makeShortUrl({ userId });
+    await urlRepository.save(urlCreated);
+
+    const newDestinyUrl = urlCreated.destinyUrl;
+    const updateUrlUseCasePromise = updateUrlUseCase.execute({
+      urlId: urlCreated.id,
+      newDestinyUrl,
+      userId,
+    });
+
+    expect(updateUrlUseCasePromise).rejects.toStrictEqual(
+      new AlreadyCreatedError('User already has that destiny url registred'),
     );
   });
 });
