@@ -30,6 +30,7 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 
 ## Desenvolvimentos adicionais:
 
+- Criação de forks usando Cluster ao iniciar a aplicação para usar todos os cores da CPU e lidar com requisições em paralelo
 - Cache de Url encurtada para redirecionamento
 - Encriptação de Senha
 - Autenticação com JWT
@@ -38,7 +39,7 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 - Validação de dados de entrada e saída
 - Tratamento de erros
 - Docker compose com o banco de dados e imagem da aplicação
-- Helmet para melhorar a segurançao ao tratar requests HTTP
+- Helmet para melhorar a segurança ao tratar requests HTTP
 
 ## Conceitos usados
 
@@ -83,7 +84,7 @@ Possíveis dados do projeto:
 
 Rota de criação de url encurtada:
 
-- Demorará em media 200ms
+- Demorará em media 300ms ou 35ms se já estiver no banco
 - Faz leitura no banco de dados
 - Adicionará um registro no banco
   - Dado que cada registro terá 127 bytes: 2,3 GB por Ano
@@ -91,7 +92,7 @@ Rota de criação de url encurtada:
 
 Rota de criação de redirecionamento:
 
-- Demorará em media 100ms
+- Demorará em media 100ms ou 20ms se estiver em cache
 - Pega do cache se existe
   - Com o cache durando 1 dia teremos 50mil urls cacheadas, ocupando 6,3MB de ram
 - Faz leitura no banco se não pegou do cache
@@ -160,8 +161,9 @@ Soluções:
 - Rota autenticada
 - Api: updateUrl(userId, urlShortenedID, newDesintyUrl)
   - Verifica se a url existe
-  - Verifica se a url de destino já foi usada
-  - Atualiza com a nova url
+  - Verifica se a nova url de destino já foi registrada para esse usuario
+  - Atualiza com a nova url e cria uma novo url encurtada
+  - Deleta a url shortened antiga do cache
 - Banco: Mysql
 
 ### Deletar Url
@@ -170,6 +172,7 @@ Soluções:
 - Rota autenticada
 - Api: deleteUrl(userId, urlShortenedID)
   - Faz soft delete na url
+  - Deleta a url shortened do cache
 - Banco: Mysql
 
 ## Tabelas do banco
@@ -199,8 +202,8 @@ Url:
 
 ### Localmente
 
-Criar .env baseado no .env.example
-Rodar: ``docker-compose up -d --build```
+- Criar .env baseado no .env.example
+- Rodar: ``docker-compose up -d --build```
 
 ## Documentação
 
