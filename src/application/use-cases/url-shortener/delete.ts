@@ -23,10 +23,11 @@ export class DeleteUrlUseCase {
 
     if (!urlToUpdate) throw new NotFoundError('Url to delete not found');
 
-    await this.cacheService.delete(urlToUpdate.shortenedUrl);
-
     urlToUpdate.delete();
 
-    await this.urlRepository.save(urlToUpdate);
+    await Promise.all([
+      this.urlRepository.save(urlToUpdate),
+      this.cacheService.delete(urlToUpdate.shortenedUrl),
+    ]);
   }
 }
