@@ -15,7 +15,7 @@ const makeSut = () => {
 };
 
 describe('Update url use case', () => {
-  it('Should update a short url destiny, create a new shortened url and delete previous shortened url key from cache', async () => {
+  it('Should update a short url destiny and delete previous shortened url key from cache', async () => {
     const { urlRepository, updateUrlUseCase, cacheService } = makeSut();
 
     const userId = 'userId12';
@@ -30,9 +30,6 @@ describe('Update url use case', () => {
     });
 
     expect(urlRepository.shortUrlDatabase[0].destinyUrl).toBe(newDestinyUrl);
-    expect(urlRepository.shortUrlDatabase[0].destinyUrl).not.toBe(
-      urlCreated.shortenedUrl,
-    );
     expect(cacheService.cacheDatabase).toStrictEqual({});
   });
 

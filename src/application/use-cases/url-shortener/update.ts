@@ -39,11 +39,11 @@ export class UpdateUrlUseCase {
         'User already has that destiny url registred',
       );
 
-    await this.cacheService.delete(urlToUpdate.shortenedUrl);
-
     urlToUpdate.destinyUrl = newDestinyUrl;
-    urlToUpdate.makeShortenedUrl();
 
-    await this.urlRepository.save(urlToUpdate);
+    await Promise.all([
+      this.cacheService.delete(urlToUpdate.shortenedUrl),
+      this.urlRepository.save(urlToUpdate),
+    ]);
   }
 }
