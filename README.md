@@ -109,7 +109,7 @@ Solução realizadas para escalar verticalmente:
 ### Encurtar a url
 
 - Client: HTTP - POST
-- Autenticação condicional apenas se o token
+- Autenticação condicional apenas se o token for passado
 - API: shortUrl(url: string; token?: string): shortenedUrl
   - Se for Usuario
     - Verifica se já tem a memsa url encurtada no banco e a retorna
@@ -139,13 +139,9 @@ Soluções:
 - Banco: Mysql
 - Cache: Redis
 
-Problemas:
-1: Rota que mais terá requisições e que faz algumas operações pesadas no banco de dados, um SELECT e um UPDATE
-2: Se teremos em media 10m usuarios criando 10 urls por dia, temos 100m urls criadas, que provavelmente serão acessadas por mais 20 pessoas em media, o que dá 2M de requisições por dia e 23 requisições por segundo, podendo chegar a 138 req/s se considerarmos que as requisições se concentrarão em um periodo de 4 horas.
+Problemas: Rota que mais terá requisições e que faz algumas operações pesadas no banco de dados, um SELECT com full colection e um UPDATE
 
-Soluções:
-1: Adicionar index por redirectUrl(Downside: Vai demorar mais tempo para registrar)
-2: Adicionar cache para as urls mais visitadas durante 6 horas e fazer o update async do clickNumber
+Solução: Adicionar cache para as urls visitadas que dura 1 dia e fazer o update async do clickNumber
 
 ### Listar Urls por Usuario
 
