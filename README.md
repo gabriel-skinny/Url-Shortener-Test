@@ -199,8 +199,9 @@ Url:
 
 ### Localmente
 
+- Clonar o repositório em sua maquina
 - Criar .env baseado no .env.example
-- Rodar: ``docker-compose up -d --build```
+- Rodar: `docker-compose up -d --build`
 
 ## Documentação
 
