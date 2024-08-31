@@ -123,7 +123,7 @@ Problemas:
 1: As urls encurtadas podem acabar se repetindo
 
 Soluções:
-1: Usar algoritimo MD5 que hasheia a url destino passada e pega os primeiros 6 caracters, isso criara um hash unico por url de destino. Tem possibilidade de duplicação, mas podemos estorar um erro no banco de dados caso esse campo esteja duplicado.
+1: Usando a blibioteca short-unique-id que com 6 caracteres tem uma probabilidade de 0.0000052 de colisão.
 
 ### Redirecionar
 
@@ -162,7 +162,7 @@ Soluções:
 - Api: updateUrl(userId, urlShortenedID, newDesintyUrl)
   - Verifica se a url existe
   - Verifica se a nova url de destino já foi registrada para esse usuario
-  - Atualiza com a nova url e cria uma novo url encurtada
+  - Atualiza com a nova url
   - Deleta a url shortened antiga do cache
 - Banco: Mysql
 
@@ -210,6 +210,13 @@ Url:
 Documentação feita no Swagger, pode ser acessada depois de rodar a aplicação nessa rota: `http://localhost:3000/api#/`
 
 ## Futuros problemas e soluções
+
+Maiores problemas:
+
+- Excesso de Registros no banco de dados
+- Excesso de Requisições na rota redirect
+
+Soluções:
 
 - Banco de Dados: Precisaremos escalar horizontalmente criando novo shards no banco de dados, seria bom trocar o banco de dados para um NOSQL como o MongoDB que facilitaria essa transição. Um dos problemas seria a lógica para determinar qual shard seria usado, mas isso poderia ser baseado no número do shortened url gerado: os que foram gerados começando com a-d, vão para o database 1, os de d-h para o database 2, e etc.
 
