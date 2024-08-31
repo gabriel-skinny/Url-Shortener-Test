@@ -30,7 +30,7 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 
 ## Desenvolvimentos adicionais:
 
-- Criação de forks usando Cluster ao iniciar a aplicação para usar todos os cores da CPU e lidar com requisições em paralelo
+- Criação de forks do processo usando Cluster ao iniciar a aplicação para usar todos os cores da CPU e lidar com requisições em paralelo
 - Cache de Url encurtada para redirecionamento
 - Encriptação de Senha
 - Docker compose com o banco de dados e imagem da aplicação
