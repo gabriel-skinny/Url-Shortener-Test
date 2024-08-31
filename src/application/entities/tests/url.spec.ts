@@ -40,4 +40,26 @@ describe('Url entity', () => {
 
     expect(url.deletedAt).toBeTruthy();
   });
+
+  it('Should shortened a new desinty url with a new shortened value', () => {
+    const url = new Url({
+      destinyUrl: 'densityUrl.com',
+    });
+    const oldShortenedUrl = url.shortenedUrl;
+
+    url.destinyUrl = 'otherDestinyUrl';
+    url.makeShortenedUrl();
+
+    expect(url.shortenedUrl).not.toBe(oldShortenedUrl);
+  });
+
+  it('Should not shortened a url with the shortened url values is passed', () => {
+    const shortenedUrlPassed = 'shortenedUrl';
+    const url = new Url({
+      destinyUrl: 'densityUrl.com',
+      shortenedUrl: shortenedUrlPassed,
+    });
+
+    expect(url.shortenedUrl).toBe(shortenedUrlPassed);
+  });
 });

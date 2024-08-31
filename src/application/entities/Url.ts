@@ -26,16 +26,20 @@ export class Url {
     this.id = props.id || randomUUID();
     this.destinyUrl = props.destinyUrl;
     this.userId = props.userId;
-    this._shortenedUrl = props.shortenedUrl || this.makeShortenedUrl();
     this._clickNumber = props.clickNumber || 0;
     this.createdAt = props.createdAt || new Date();
     this.deletedAt = props.deletedAt;
     this.updatedAt = props.updatedAt;
+
+    this.makeShortenedUrl(props.shortenedUrl);
   }
 
-  private makeShortenedUrl() {
-    const formatedMd5HashedLongUrl = md5(this.destinyUrl).substring(0, 6);
-    return `${process.env.HOST_URL}/${formatedMd5HashedLongUrl}`;
+  public makeShortenedUrl(value?: string) {
+    if (value) this._shortenedUrl = value;
+    else {
+      const formatedMd5HashedLongUrl = md5(this.destinyUrl).substring(0, 6);
+      this._shortenedUrl = `${process.env.HOST_URL}/${formatedMd5HashedLongUrl}`;
+    }
   }
 
   public click() {
