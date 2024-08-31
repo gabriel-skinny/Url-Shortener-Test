@@ -3,17 +3,19 @@ import { InMemoryShortUrlRepository } from 'src/application/repositories/inMemor
 
 import { makeShortUrl } from './factories/makeShortUrl';
 import { DeleteUrlUseCase } from '../delete';
+import { InMemoryCacheService } from 'src/application/services/inMemoryCache';
 
 const makeSut = () => {
   const urlRepository = new InMemoryShortUrlRepository();
-  const deleteUrlUseCase = new DeleteUrlUseCase(urlRepository);
+  const cacheService = new InMemoryCacheService();
+  const deleteUrlUseCase = new DeleteUrlUseCase(urlRepository, cacheService);
 
-  return { urlRepository, deleteUrlUseCase };
+  return { urlRepository, deleteUrlUseCase, cacheService };
 };
 
 describe('Delete url use case', () => {
-  it('Should delete a short url', async () => {
-    const { urlRepository, deleteUrlUseCase } = makeSut();
+  it('Should delete a short url from database and cache', async () => {
+    const { urlRepository, deleteUrlUseCase, cacheService } = makeSut();
 
     const userId = 'userId12';
     const urlCreated = makeShortUrl({ userId });
@@ -25,6 +27,7 @@ describe('Delete url use case', () => {
     });
 
     expect(urlRepository.shortUrlDatabase[0].deletedAt).toBeTruthy();
+    expect(cacheService.cacheDatabase).toStrictEqual({});
   });
 
   it('Should throw an notFound error if the short url passed does not exists', async () => {
