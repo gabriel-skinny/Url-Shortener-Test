@@ -5,4 +5,5 @@ export abstract class AbstractCacheService {
     expiresInSeconds: number;
   }): Promise<void>;
   abstract get<T>(key: string): Promise<T>;
+  abstract delete(key: string): Promise<void>;
 }

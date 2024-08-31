@@ -1,7 +1,7 @@
 import { AbstractCacheService } from './cache';
 
 export class InMemoryCacheService implements AbstractCacheService {
-  private cacheDatabase: { [key: string]: any } = {};
+  public cacheDatabase: { [key: string]: any } = {};
 
   async set(data: { key: string; value: string }): Promise<void> {
     this.cacheDatabase[data.key] = data.value;
@@ -9,5 +9,9 @@ export class InMemoryCacheService implements AbstractCacheService {
 
   async get<T>(key: string): Promise<T> {
     return this.cacheDatabase[key];
+  }
+
+  async delete(key: string): Promise<void> {
+    delete this.cacheDatabase[key];
   }
 }
