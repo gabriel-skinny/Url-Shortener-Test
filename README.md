@@ -212,9 +212,11 @@ Maiores problemas:
 - Excesso de Registros no banco de dados
 - Excesso de Requisições na rota redirect
 
-Soluções:
+Soluções com escalonamento horizontal:
 
 - Banco de Dados: Precisaremos escalar horizontalmente criando novo shards no banco de dados, seria bom trocar o banco de dados para um NOSQL como o MongoDB que facilitaria essa transição. Um dos problemas seria a lógica para determinar qual shard seria usado, mas isso poderia ser baseado no número do shortened url gerado: os que foram gerados começando com a-d, vão para o database 1, os de d-h para o database 2, e etc.
+
+- Cache: O ideal seria todo o Get da nossa aplicação ficar salvo no Cache com alguma estrategia, pois qualquer Select no banco será muito custoso, já que ele terá muitos registros. Então precisaremos escalar o Redis também usando mais nodes.
 
 - Resposta da Api na rota redirect: Precisaremos ter mais instancias da nossa aplicação rodando e ter um load balancer como um NGNIX com um algoritimo baseado em tempo de resposta, para jogar as novas requests para instancias que estão redirecionando mais rapidamente. Isso precisa escalar junto com o banco de dados que é nosso maior ponto de gargalo, precisamos garantir uma relação de 1:2 de instancias entre nossa aplicação com o banco de dados para não lhe causar overhead.
 
