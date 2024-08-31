@@ -1,12 +1,12 @@
 import { NotFoundError } from 'src/application/errors/notFound';
-import { InMemoryShortUrlRepository } from 'src/application/repositories/inMemoryShortUrlRepository';
+import { InMemoryUrlRepository } from 'src/application/repositories/inMemoryUrlRepository';
 
 import { makeShortUrl } from './factories/makeShortUrl';
 import { DeleteUrlUseCase } from '../delete';
 import { InMemoryCacheService } from 'src/application/services/inMemoryCache';
 
 const makeSut = () => {
-  const urlRepository = new InMemoryShortUrlRepository();
+  const urlRepository = new InMemoryUrlRepository();
   const cacheService = new InMemoryCacheService();
   const deleteUrlUseCase = new DeleteUrlUseCase(urlRepository, cacheService);
 
@@ -26,7 +26,7 @@ describe('Delete url use case', () => {
       userId,
     });
 
-    expect(urlRepository.shortUrlDatabase[0].deletedAt).toBeTruthy();
+    expect(urlRepository.urlDatabase[0].deletedAt).toBeTruthy();
     expect(cacheService.cacheDatabase).toStrictEqual({});
   });
 

@@ -1,11 +1,11 @@
-import { InMemoryShortUrlRepository } from 'src/application/repositories/inMemoryShortUrlRepository';
+import { InMemoryUrlRepository } from 'src/application/repositories/inMemoryUrlRepository';
 import { CreateShortUrlUseCase } from '../create';
 import { makeShortUrl } from './factories/makeShortUrl';
 import UserExistsByIdUseCaseStub from './stubs/userExistsById';
 import { NotFoundError } from 'src/application/errors/notFound';
 
 const makeSut = () => {
-  const shortUrlRepository = new InMemoryShortUrlRepository();
+  const shortUrlRepository = new InMemoryUrlRepository();
   const userExistsByIdUseCase = new UserExistsByIdUseCaseStub();
   const createShortUrlUseCase = new CreateShortUrlUseCase(
     shortUrlRepository,
@@ -23,7 +23,7 @@ describe('Create short url use case', () => {
       destinyUrl: 'desitinyUrl',
     });
 
-    expect(shortUrlRepository.shortUrlDatabase).toHaveLength(1);
+    expect(shortUrlRepository.urlDatabase).toHaveLength(1);
     expect(response.shortednedUrl).toBeTruthy();
   });
 
@@ -36,8 +36,8 @@ describe('Create short url use case', () => {
       userId,
     });
 
-    expect(shortUrlRepository.shortUrlDatabase).toHaveLength(1);
-    expect(shortUrlRepository.shortUrlDatabase[0].userId).toBe(userId);
+    expect(shortUrlRepository.urlDatabase).toHaveLength(1);
+    expect(shortUrlRepository.urlDatabase[0].userId).toBe(userId);
     expect(response.shortednedUrl).toBeTruthy();
   });
 
@@ -51,7 +51,7 @@ describe('Create short url use case', () => {
       destinyUrl: shortUrlCreated.destinyUrl,
     });
 
-    expect(shortUrlRepository.shortUrlDatabase).toHaveLength(1);
+    expect(shortUrlRepository.urlDatabase).toHaveLength(1);
     expect(response.shortednedUrl).toBe(shortUrlCreated.shortenedUrl);
   });
 
@@ -67,7 +67,7 @@ describe('Create short url use case', () => {
       userId,
     });
 
-    expect(shortUrlRepository.shortUrlDatabase).toHaveLength(1);
+    expect(shortUrlRepository.urlDatabase).toHaveLength(1);
     expect(response.shortednedUrl).toBe(shortUrlCreated.shortenedUrl);
   });
 
@@ -96,7 +96,7 @@ describe('Create short url use case', () => {
       destinyUrl: 'destinyUrl',
     });
 
-    expect(shortUrlRepository.shortUrlDatabase).toHaveLength(1);
+    expect(shortUrlRepository.urlDatabase).toHaveLength(1);
     expect(userExistsByIdUseCase.execute).toHaveBeenCalledTimes(0);
   });
 });

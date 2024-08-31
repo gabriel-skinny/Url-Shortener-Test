@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Url } from 'src/application/entities/Url';
-import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
+import { AbstractUrlRepository } from 'src/application/repositories/urlRepository';
 import { DataSource, IsNull, Repository } from 'typeorm';
 import { UrlEntity } from '../entities/url';
 import { UrlEntityMapper } from '../mappers/url';
 
 @Injectable()
-export class UrlRepository implements AbstractShortUrlRepository {
+export class UrlRepository implements AbstractUrlRepository {
   constructor(
     @InjectRepository(UrlEntity)
     private urlRepository: Repository<UrlEntity>,

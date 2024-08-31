@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from '../../errors/notFound';
-import { AbstractShortUrlRepository } from '../../repositories/shortUrlRepository';
+import { AbstractUrlRepository } from '../../repositories/urlRepository';
 import { AbstractCacheService } from 'src/application/services/cache';
 
 interface IRedirectUseCaseParams {
@@ -14,7 +14,7 @@ interface IRedirectUseCaseReturn {
 @Injectable()
 export class RedirectUseCase {
   constructor(
-    private shortUrlRepository: AbstractShortUrlRepository,
+    private shortUrlRepository: AbstractUrlRepository,
     private cacheService: AbstractCacheService,
   ) {}
 

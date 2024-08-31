@@ -1,6 +1,6 @@
 import { Url } from '../entities/Url';
 
-export abstract class AbstractShortUrlRepository {
+export abstract class AbstractUrlRepository {
   abstract save(data: Url): Promise<void>;
   abstract findByUrlDestinyUrlAndUser(data: {
     destinyUrl: string;

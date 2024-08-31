@@ -1,11 +1,11 @@
 import { NotFoundError } from 'src/application/errors/notFound';
-import { InMemoryShortUrlRepository } from 'src/application/repositories/inMemoryShortUrlRepository';
+import { InMemoryUrlRepository } from 'src/application/repositories/inMemoryUrlRepository';
 import { RedirectUseCase } from '../redirect';
 import { makeShortUrl } from './factories/makeShortUrl';
 import { InMemoryCacheService } from 'src/application/services/inMemoryCache';
 
 const makeSut = () => {
-  const urlRepository = new InMemoryShortUrlRepository();
+  const urlRepository = new InMemoryUrlRepository();
   const cacheService = new InMemoryCacheService();
   const redirectUseCase = new RedirectUseCase(urlRepository, cacheService);
 
@@ -27,7 +27,7 @@ describe('Redirect url use case', () => {
     });
 
     expect(response.desitinyUrl).toBe(urlShortened.destinyUrl);
-    expect(urlRepository.shortUrlDatabase[0].clickNumber).toBe(1);
+    expect(urlRepository.urlDatabase[0].clickNumber).toBe(1);
     expect(cacheService.set).toHaveBeenCalledTimes(1);
   });
 
@@ -49,7 +49,7 @@ describe('Redirect url use case', () => {
     });
 
     expect(response.desitinyUrl).toBe(urlShortened.destinyUrl);
-    expect(urlRepository.shortUrlDatabase[0].clickNumber).toBe(1);
+    expect(urlRepository.urlDatabase[0].clickNumber).toBe(1);
     expect(urlRepository.findByShortenedUrl).not.toHaveBeenCalled();
   });
 

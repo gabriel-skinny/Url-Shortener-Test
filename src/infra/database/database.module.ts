@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import 'dotenv/config';
-import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
+import { AbstractUrlRepository } from 'src/application/repositories/urlRepository';
 import { AbstractUserRepository } from 'src/application/repositories/userRepository';
 import { UrlEntity } from './entities/url';
 import { UserEntity } from './entities/user';
@@ -31,7 +31,7 @@ import { CacheService } from './cache/cacheService';
       useClass: UserRepository,
     },
     {
-      provide: AbstractShortUrlRepository,
+      provide: AbstractUrlRepository,
       useClass: UrlRepository,
     },
     {
@@ -52,7 +52,7 @@ import { CacheService } from './cache/cacheService';
       useClass: UserRepository,
     },
     {
-      provide: AbstractShortUrlRepository,
+      provide: AbstractUrlRepository,
       useClass: UrlRepository,
     },
     {

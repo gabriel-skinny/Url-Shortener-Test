@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from 'src/application/errors/notFound';
-import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
+import { AbstractUrlRepository } from 'src/application/repositories/urlRepository';
 import { AbstractCacheService } from 'src/application/services/cache';
 
 interface IDeleteUrlUseCaseParams {
@@ -11,7 +11,7 @@ interface IDeleteUrlUseCaseParams {
 @Injectable()
 export class DeleteUrlUseCase {
   constructor(
-    private readonly urlRepository: AbstractShortUrlRepository,
+    private readonly urlRepository: AbstractUrlRepository,
     private readonly cacheService: AbstractCacheService,
   ) {}
 

@@ -1,10 +1,10 @@
-import { InMemoryShortUrlRepository } from 'src/application/repositories/inMemoryShortUrlRepository';
+import { InMemoryUrlRepository } from 'src/application/repositories/inMemoryUrlRepository';
 
 import { makeShortUrl } from './factories/makeShortUrl';
 import { GetUrlsByUserIdUseCase } from '../get-urls-by-user-id';
 
 const makeSut = () => {
-  const urlRepository = new InMemoryShortUrlRepository();
+  const urlRepository = new InMemoryUrlRepository();
   const getUrlsByUserId = new GetUrlsByUserIdUseCase(urlRepository);
 
   return { urlRepository, getUrlsByUserId };

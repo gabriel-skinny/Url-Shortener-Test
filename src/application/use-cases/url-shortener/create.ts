@@ -1,7 +1,7 @@
 import { NotFoundError } from 'src/application/errors/notFound';
 
 import { Url } from 'src/application/entities/Url';
-import { AbstractShortUrlRepository } from 'src/application/repositories/shortUrlRepository';
+import { AbstractUrlRepository } from 'src/application/repositories/urlRepository';
 import { AbstractUserExistsByIdUseCase } from '../user/exists-by-id';
 import { Injectable } from '@nestjs/common';
 
@@ -17,7 +17,7 @@ interface ICreateShortUrlReturn {
 @Injectable()
 export class CreateShortUrlUseCase {
   constructor(
-    private shortUrlRepository: AbstractShortUrlRepository,
+    private urlRepository: AbstractUrlRepository,
     private userExistsByIdUseCase: AbstractUserExistsByIdUseCase,
   ) {}
 
@@ -30,16 +30,14 @@ export class CreateShortUrlUseCase {
       if (!(await this.userExistsByIdUseCase.execute(userId)))
         throw new NotFoundError('User not found');
 
-      urlSaved = await this.shortUrlRepository.findByUrlDestinyUrlAndUser({
+      urlSaved = await this.urlRepository.findByUrlDestinyUrlAndUser({
         destinyUrl,
         userId,
       });
     } else {
-      urlSaved = await this.shortUrlRepository.findByUrlDestinyUrlAndUserIsNull(
-        {
-          destinyUrl,
-        },
-      );
+      urlSaved = await this.urlRepository.findByUrlDestinyUrlAndUserIsNull({
+        destinyUrl,
+      });
     }
 
     if (urlSaved) return { shortednedUrl: urlSaved.shortenedUrl };
@@ -48,7 +46,7 @@ export class CreateShortUrlUseCase {
       destinyUrl,
       userId,
     });
-    this.shortUrlRepository.save(url);
+    this.urlRepository.save(url);
 
     return { shortednedUrl: url.shortenedUrl };
   }
