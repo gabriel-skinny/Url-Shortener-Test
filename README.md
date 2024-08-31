@@ -33,13 +33,14 @@ Tecnologias Usadas: Nesjs, MySQL, Redis, JWT, Jest, Bcrypt, TypeOrm, Swagger, Do
 - Criação de forks usando Cluster ao iniciar a aplicação para usar todos os cores da CPU e lidar com requisições em paralelo
 - Cache de Url encurtada para redirecionamento
 - Encriptação de Senha
-- Autenticação com JWT
+- Docker compose com o banco de dados e imagem da aplicação
 - Testes Unitarios
-- Documentação no Swagger
+- Adicionando timeout nas rotas de login do usuario para impedir DDOS e Brute-Force Attack
+- Helmet para melhorar a segurança ao tratar requests HTTP
+- Autenticação com JWT
 - Validação de dados de entrada e saída
 - Tratamento de erros
-- Docker compose com o banco de dados e imagem da aplicação
-- Helmet para melhorar a segurança ao tratar requests HTTP
+- Documentação no Swagger
 
 ## Conceitos usados
 
@@ -110,7 +111,7 @@ Solução realizadas para escalar verticalmente:
 
 - Client: HTTP - POST
 - Autenticação condicional apenas se o token for passado
-- API: shortUrl(url: string; token?: string): shortenedUrl
+- API: createShortUrl(url: string; token?: string): shortenedUrl
   - Se for Usuario
     - Verifica se já tem a memsa url encurtada no banco e a retorna
     - Se não cria um novo registro com ele
